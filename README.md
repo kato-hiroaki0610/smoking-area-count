@@ -2,8 +2,8 @@
 
 ## 開発環境
 - フロントエンド
-  - Python
-    - FastAPI
-- バックエンド
   - TypeScript
     - Angular
+- バックエンド
+  - Python
+    - FastAPI
