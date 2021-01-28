@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class FileReaderForCSV(FileReader):
-    """人名が書かれたファイルの処理を行うクラス"""
+    """喫煙室利用者数が書かれたファイルの処理を行うクラス"""
     def set_input_file(self, file_path):
         """コンストラクタ
 
