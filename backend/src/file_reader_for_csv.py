@@ -27,6 +27,7 @@ class FileReaderForCSV(FileReader):
             人数
         """
         # TODO    ログ
+        #         CSVが見つからなかった場合
         # 最終行の検知数を取得する
         with open(self.file_path, 'r', encoding='utf8') as f:
             reader = csv.DictReader(f)
