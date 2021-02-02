@@ -1,0 +1,4 @@
+ビデオソース名, yyyy/MM/dd, HH:mm:ss, fff, 検知数
+video_source,ymd,hms,fff,5
+video_source,ymd,hms,fff,6
+video_source,ymd,hms,fff,2

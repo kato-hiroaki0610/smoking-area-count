@@ -1,5 +1,6 @@
 """喫煙室利用者数が書かれたCSVファイルの処理を行うモジュール"""
 
+import csv
 import logging
 
 from file_reader import FileReader
@@ -16,6 +17,8 @@ class FileReaderForCSV(FileReader):
             file_path(str): 入力ファイルパス
         """
         self.file_path = file_path
+        # 検知数が格納されているカラムのヘッダー名
+        self.detect_field_name = ' 検知数'
 
     def parse_file(self):
         """ファイルから人数を取得する
@@ -24,20 +27,21 @@ class FileReaderForCSV(FileReader):
             人数
         """
         # TODO    ログ
+        # 最終行の検知数を取得する
+        with open(self.file_path, 'r', encoding='utf8') as f:
+            reader = csv.DictReader(f)
 
-        # 最終行を取得する
-        try:
-            with open(self.file_path) as f:
-                last_line = [line for line in f.readlines()][-1]
-        except IndexError:
-            # ログが一行もない場合
-            count = 0
-            return count
+            # ログが1行（ヘッダーのみ）の場合
+            if reader.line_num == 1:
+                return 0
 
-        try:
-            count = int(last_line.split(',')[-1])
-        except ValueError:
-            # 検知人数が入っていない場合
-            count = 0
+            # iteratorをリストに変換する
+            rows = [r for r in reader]
+
+            # 最終行を取得
+            last_line = rows[-1]
+
+            # 検知数を取得
+            count = last_line[self.detect_field_name]
 
         return count
