@@ -18,6 +18,7 @@ class FileReaderForCSV(FileReader):
         """
         self.file_path = file_path
         # 検知数が格納されているカラムのヘッダー名
+        #TODO 設定ファイルから読むように変更する
         self.detect_field_name = ' 検知数'
 
     def parse_file(self):
