@@ -1,7 +1,11 @@
 import os
+import sys
 import unittest
 
-from file_reader_for_csv import FileReaderForCSV as frc
+path = os.path.join(os.path.dirname(__file__), '../src')
+sys.path.append(path)
+
+from file_reader_for_csv import FileReaderForCSV as frc  # noqa
 
 
 class TestFileReaderForCSV(unittest.TestCase):
