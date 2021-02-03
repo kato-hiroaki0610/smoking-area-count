@@ -1,8 +1,11 @@
 # logファイルの場所を「絶対パス」で記載
 log_csv_file = 'E:\project\rework\smoking-area-count\backend\src\tests\test_file\video_source.csv'
 
-# 検知数が格納されているカラムのヘッダー名
-detect_field_name = ' 検知数'
+# 検知数が格納されているカラムの列数
+detect_field_num = 4
 
 # 定員上限数
-capacity_limit = 7
+[capacity_limit]
+5F = 7
+9F = 5
+11F = 10
