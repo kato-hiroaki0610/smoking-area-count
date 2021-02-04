@@ -29,7 +29,12 @@ class FileReaderForToml(FileReader):
             with open(self.file_path, encoding='utf8') as f:
                 toml_file = toml.load(f)
 
+                self._contents = toml_file
+
             return toml_file
         except FileNotFoundError:
             error_value = f'{self.file_path}が見つかりませんでした'
             raise FileNotFoundError(error_value)
+
+    def get_contents(self):
+        return self._contents

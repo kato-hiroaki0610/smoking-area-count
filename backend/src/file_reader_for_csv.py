@@ -37,6 +37,8 @@ class FileReaderForCSV(FileReader):
             # iteratorをリストに変換する
             rows = [r for r in reader]
 
+            self._contents = rows
+
             # ログが0行の場合
             if len(rows) == 0:
                 return 0
@@ -48,3 +50,6 @@ class FileReaderForCSV(FileReader):
             count = last_line[self.detect_field_num]
 
         return count
+
+    def get_contents(self):
+        return self._contents

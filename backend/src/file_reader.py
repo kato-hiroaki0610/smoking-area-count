@@ -6,6 +6,11 @@ from abc import ABCMeta, abstractmethod
 class FileReader(metaclass=ABCMeta):
     """ファイルリーダークラスの親クラス"""
 
+    def __init__(self):
+        """コンストラクタ"""
+        self._file_path = ''
+        self._contents = ''
+
     @abstractmethod
     def set_file_path(self, file_path):
         """フィールドにファイルのパスをセットする
@@ -17,8 +22,13 @@ class FileReader(metaclass=ABCMeta):
 
     @abstractmethod
     def load_file(self):
-        """ファイルに書かれている内容を解析する
+        """ファイルを読み込む"""
+        raise NotImplementedError()
 
-        Return 解析結果
+    @abstractmethod
+    def get_contents(self):
+        """読み込んだファイルを取得する
+
+        Return ファイル内容
         """
         raise NotImplementedError()
