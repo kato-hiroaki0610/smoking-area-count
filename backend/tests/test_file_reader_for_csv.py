@@ -12,12 +12,16 @@ class TestFileReaderForCSV(unittest.TestCase):
     def setUp(self):
         tests_dir = os.path.dirname(__file__)
         self.file_name = tests_dir + '/test_file/video_source.csv'
+        self.detect_field_num = 4
 
-    def test_load_file(self):
+    def get_contents(self):
         csv_reader = frc()
         csv_reader.set_file_path(self.file_name)
+        csv_reader.load_file()
+
+        expected = list()
+        actual = csv_reader.get_contents()
+        self.assertEqual(type(expected), type(actual))
 
         expected = '2'
-        actual = csv_reader.load_file()
-
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, actual[-1][self.detect_field_num])
