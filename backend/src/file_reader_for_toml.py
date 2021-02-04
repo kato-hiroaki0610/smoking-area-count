@@ -18,17 +18,17 @@ class FileReaderForToml(FileReader):
         Args:
             file_path(str): Tomlファイルのパス
         """
-        self.file_path = file_path
+        self._file_path = file_path
 
     def load_file(self):
         """Tomlファイルを読み込む"""
         try:
-            with open(self.file_path, encoding='utf8') as f:
+            with open(self._file_path, encoding='utf8') as f:
                 toml_file = toml.load(f)
 
                 self._contents = toml_file
         except FileNotFoundError:
-            error_value = f'{self.file_path}が見つかりませんでした'
+            error_value = f'{self._file_path}が見つかりませんでした'
             raise FileNotFoundError(error_value)
 
     def get_contents(self):

@@ -17,14 +17,14 @@ class FileReaderForCSV(FileReader):
         Args:
             file_path(str): 入力ファイルパス
         """
-        self.file_path = file_path
+        self._file_path = file_path
 
     def load_file(self):
         """CSVを読み込む"""
         # TODO    ログ
         #         CSVが見つからなかった場合
         # 最終行の検知数を取得する
-        with open(self.file_path, 'r', encoding='utf8') as f:
+        with open(self._file_path, 'r', encoding='utf8') as f:
             reader = csv.reader(f)
 
             # iteratorをリストに変換する
