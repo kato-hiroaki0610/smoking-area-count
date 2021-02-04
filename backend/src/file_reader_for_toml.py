@@ -27,8 +27,6 @@ class FileReaderForToml(FileReader):
                 toml_file = toml.load(f)
 
                 self._contents = toml_file
-
-            return toml_file
         except FileNotFoundError:
             error_value = f'{self.file_path}が見つかりませんでした'
             raise FileNotFoundError(error_value)
