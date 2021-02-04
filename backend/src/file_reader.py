@@ -5,8 +5,9 @@ from abc import ABCMeta, abstractmethod
 
 class FileReader(metaclass=ABCMeta):
     """ファイルリーダークラスの親クラス"""
+
     @abstractmethod
-    def set_input_file(self, file_path):
+    def set_file_path(self, file_path):
         """フィールドにファイルのパスをセットする
 
         Args:
@@ -15,7 +16,7 @@ class FileReader(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def parse_file(self):
+    def load_file(self):
         """ファイルに書かれている内容を解析する
 
         Return 解析結果

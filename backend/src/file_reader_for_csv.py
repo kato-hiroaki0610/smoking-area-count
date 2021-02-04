@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 
 class FileReaderForCSV(FileReader):
     """喫煙室利用者数が書かれたファイルの処理を行うクラス"""
-    def set_input_file(self, file_path):
+
+    def set_file_path(self, file_path):
         """コンストラクタ
 
         Args:
@@ -21,7 +22,7 @@ class FileReaderForCSV(FileReader):
         # TODO 設定ファイルから読むように変更する
         self.detect_field_num = 4
 
-    def parse_file(self):
+    def load_file(self):
         """ファイルから人数を取得する
 
         Return

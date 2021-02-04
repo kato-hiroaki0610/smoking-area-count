@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 class FileReaderForToml(FileReader):
     """Tomlファイルリーダー クラス"""
-    def set_input_file(self, file_path):
+
+    def set_file_path(self, file_path):
         """フィールドにtomlファイルのパスをセットする
 
         Args:
@@ -19,7 +20,7 @@ class FileReaderForToml(FileReader):
         """
         self.file_path = file_path
 
-    def parse_file(self):
+    def load_file(self):
         """Tomlファイルに書かれているパラメーターを解析する
 
         Return パラメーターの辞書
