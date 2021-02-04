@@ -12,7 +12,7 @@ class FileReaderForCSV(FileReader):
     """喫煙室利用者数が書かれたファイルの処理を行うクラス"""
 
     def set_file_path(self, file_path):
-        """コンストラクタ
+        """フィールドにcsvファイルのパスをセットする
 
         Args:
             file_path(str): 入力ファイルパス
@@ -23,11 +23,7 @@ class FileReaderForCSV(FileReader):
         self.detect_field_num = 4
 
     def load_file(self):
-        """ファイルから人数を取得する
-
-        Return
-            人数
-        """
+        """CSVを読み込む"""
         # TODO    ログ
         #         CSVが見つからなかった場合
         # 最終行の検知数を取得する
@@ -52,4 +48,9 @@ class FileReaderForCSV(FileReader):
         return count
 
     def get_contents(self):
+        """読み込んだCSVを返す
+
+        Return
+            読み込んだCSV
+        """
         return self._contents
