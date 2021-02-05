@@ -63,9 +63,17 @@ class CreateJson:
         else:
             return False
 
-    def execute_create() -> None:
+    def execute_create(self) -> None:
         """リストと辞書からJsonを作成する"""
-        pass
+        json_dict = {}
+
+        json_dict['階数'] = 'todo'
+        detect_num = self.get_detect_column()
+        json_dict['利用者数'] = detect_num
+        json_dict['待ち人数'] = 'todo'
+        json_dict['上限超え'] = self.is_capacity_over(detect_num)
+
+        self._created_json = json.dumps(json_dict)
 
     def get_created_json() -> json:
         """作成したJsonを取得する

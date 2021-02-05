@@ -1,5 +1,6 @@
 """CreateJsonクラスのテスト"""
 
+import json
 import unittest
 
 from src.create_json import CreateJson
@@ -78,4 +79,19 @@ class TestCreateJson(unittest.TestCase):
 
         expected = False
         actual = json_creater.is_capacity_over(6)
+        self.assertEqual(expected, actual)
+
+    def test_execute_create(self):
+        """execute_createのテスト"""
+        json_creater = CreateJson([[], [10, 10]], {
+            'detect_field_num': 1,
+            'capacity_limit': {
+                '5F': 10
+            }
+        })
+
+        json_creater.execute_create()
+
+        expected = str
+        actual = type(json_creater._created_json)
         self.assertEqual(expected, actual)
