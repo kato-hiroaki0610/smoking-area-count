@@ -44,15 +44,24 @@ class CreateJson:
         else:
             return int(count)
 
-    def is_capacity_over(capacity: int) -> bool:
+    def is_capacity_over(self, count: int) -> bool:
         """喫煙室が定員上限か判定する
 
         Args:
-            capacity(int): 定員上限
+            count(int): 検知数
         Return:
             定員上限か
         """
-        pass
+        # FIXME とりあえず5階を指定
+        capacity_limit = self._setting['capacity_limit']['5F']
+
+        if type(capacity_limit) != int:
+            capacity_limit = int(capacity_limit)
+
+        if count <= capacity_limit:
+            return True
+        else:
+            return False
 
     def execute_create() -> None:
         """リストと辞書からJsonを作成する"""
