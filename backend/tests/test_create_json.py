@@ -95,3 +95,19 @@ class TestCreateJson(unittest.TestCase):
         expected = str
         actual = type(json_creater._created_json)
         self.assertEqual(expected, actual)
+
+    def test_get_created_json(self):
+        """get_created_jsonのテスト"""
+        json_creater = CreateJson([[], [10, 10]], {
+            'detect_field_num': 1,
+            'capacity_limit': {
+                '5F': 10
+            }
+        })
+
+        json_creater.execute_create()
+        created_json = json_creater.get_created_json()
+
+        expected = str
+        actual = type(created_json)
+        self.assertEqual(expected, actual)

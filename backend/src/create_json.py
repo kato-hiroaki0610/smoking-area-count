@@ -75,10 +75,10 @@ class CreateJson:
 
         self._created_json = json.dumps(json_dict)
 
-    def get_created_json() -> json:
+    def get_created_json(self) -> json:
         """作成したJsonを取得する
 
         Return:
             作成したJson
         """
-        pass
+        return self._created_json
