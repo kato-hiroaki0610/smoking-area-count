@@ -16,7 +16,7 @@ class CreateJson:
             settings(Dict): 読み込んだToml
         """
         self._last_row = self.get_last_row(rows)
-        self._setting = ''
+        self._setting = settings
         self._created_json = ''
 
     def get_last_row(self, rows: List[List]) -> List:
@@ -30,15 +30,19 @@ class CreateJson:
         """
         return rows[-1]
 
-    def get_detect_column(column_num: int) -> int:
+    def get_detect_column(self) -> int:
         """最終行のから検知数を取得する
 
-        Args:
-            column_num(int): CSVの検知数が含まれるカラム番号
         Return:
             検知数
         """
-        pass
+        detect_num = self._setting['detect_field_num']
+        count = self._last_row[detect_num]
+
+        if type(count) == int:
+            return count
+        else:
+            return int(count)
 
     def is_capacity_over(capacity: int) -> bool:
         """喫煙室が定員上限か判定する
