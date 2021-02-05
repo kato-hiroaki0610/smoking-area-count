@@ -14,7 +14,7 @@ class TestFileReaderForCSV(unittest.TestCase):
         self.file_name = tests_dir + '/test_file/video_source.csv'
         self.detect_field_num = 4
 
-    def get_contents(self):
+    def test_get_contents(self):
         csv_reader = frc()
         csv_reader.set_file_path(self.file_name)
         csv_reader.load_file()
