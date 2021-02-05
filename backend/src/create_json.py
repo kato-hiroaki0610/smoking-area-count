@@ -15,11 +15,11 @@ class CreateJson:
                                 [[1行目], [2行目], ..., [n行目]]の形になっている
             settings(Dict): 読み込んだToml
         """
-        self._last_row = ''
+        self._last_row = self.get_last_row(rows)
         self._setting = ''
         self._created_json = ''
 
-    def __get_last_row(rows: List[List]) -> List:
+    def get_last_row(self, rows: List[List]) -> List:
         """読み込んだCSVから最終行を取得する
 
         Args:
@@ -28,9 +28,9 @@ class CreateJson:
         Return:
             読み込んだCSVから最終行のみを返す
         """
-        pass
+        return rows[-1]
 
-    def __get_detect_column(column_num: int) -> int:
+    def get_detect_column(column_num: int) -> int:
         """最終行のから検知数を取得する
 
         Args:
@@ -40,7 +40,7 @@ class CreateJson:
         """
         pass
 
-    def __is_capacity_over(capacity: int) -> bool:
+    def is_capacity_over(capacity: int) -> bool:
         """喫煙室が定員上限か判定する
 
         Args:
