@@ -3,48 +3,57 @@
 import json
 from typing import Dict, List
 
+from file_reader_for_csv import FileReaderForCSV as csv_reader
+
 
 class CreateJson:
     """JSONを作成するクラス"""
 
-    def __init__(self, rows: List[List], settings: Dict) -> None:
+    def __init__(self, settings: Dict) -> None:
         """コンストラクタ
 
         Args:
-            rows(List[List]): 読み込んだCSV
-                                [[1行目], [2行目], ..., [n行目]]の形になっている
             settings(Dict): 読み込んだToml
         """
-        self._last_row = self.get_last_row(rows)
         self._setting = settings
         self._created_json = ''
 
-    def get_last_row(self, rows: List[List]) -> List:
-        """読み込んだCSVから最終行を取得する
+    def get_last_row(self, file_name_path: str) -> List or None:
+        """CSVを読み込み最終行を取得する
 
         Args:
-            rows[List[List]]: 読み込んだCSV
-                                [[1行目], [2行目], ..., [n行目]]の形になっている
+            file_name(str): 読み込むCSVのファイルネームパス
         Return:
             読み込んだCSVから最終行のみを返す
         """
+        reader = csv_reader()
+        reader.set_file_path(file_name_path)
+        reader.load_file()
+        rows = reader.get_contents()
+
+        if rows is None:
+            return None
+
         return rows[-1]
 
-    def get_detect_column(self) -> int:
-        """最終行のから検知数を取得する
+    def get_detect_column(self, last_row: List) -> int:
+        """最終行から検知数を取得する
+
+        Args:
+            last_row(List): 最終行
 
         Return:
             検知数
         """
         detect_num = self._setting['detect_field_num']
-        count = self._last_row[detect_num]
+        count = last_row[detect_num]
 
         if type(count) == int:
             return count
         else:
             return int(count)
 
-    def is_capacity_over(self, count: int) -> bool:
+    def is_capacity_over(self, setting: dict, count: int) -> bool:
         """喫煙室が定員上限か判定する
 
         Args:
@@ -52,8 +61,7 @@ class CreateJson:
         Return:
             定員上限か
         """
-        # FIXME とりあえず5階を指定
-        capacity_limit = self._setting['capacity_limit']['5階']
+        capacity_limit = setting['定員上限']
 
         if type(capacity_limit) != int:
             capacity_limit = int(capacity_limit)
@@ -67,11 +75,25 @@ class CreateJson:
         """リストと辞書からJsonを作成する"""
         json_dict = {}
 
-        json_dict['階数'] = 'todo'
-        detect_num = self.get_detect_column()
-        json_dict['利用者数'] = detect_num
-        json_dict['待ち人数'] = 'todo'
-        json_dict['上限超え'] = self.is_capacity_over(detect_num)
+        for setting_area in self._setting['area']:
+            current_area = setting_area['場所']
+            json_dict['階数'] = current_area
+
+            # 利用者の最終行を取得する
+            last_user_row = self.get_last_row(setting_area['利用者'])
+            if last_user_row is not None:
+                user_detect_num = self.get_detect_column(last_user_row)
+                json_dict['利用者数'] = user_detect_num
+
+                json_dict['上限超え'] = self.is_capacity_over(
+                    setting_area, user_detect_num)
+
+            # 待ち人数の最終行を取得する
+            last_wait_user_row = self.get_last_row(setting_area['待ち人数'])
+            if last_wait_user_row is not None:
+                wait_user_detect_num = self.get_detect_column(
+                    last_wait_user_row)
+                json_dict['待ち人数'] = wait_user_detect_num
 
         # ensure_ascii=FalseでUnicodeを出力しないようにする
         self._created_json = json.dumps(json_dict, ensure_ascii=False)

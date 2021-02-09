@@ -2,6 +2,7 @@
 
 import csv
 import logging
+import os
 
 from file_reader import FileReader
 
@@ -24,6 +25,12 @@ class FileReaderForCSV(FileReader):
         # TODO    ログ
         #         CSVが見つからなかった場合
         # 最終行の検知数を取得する
+
+        # ファイルパスに何も格納されていない場足
+        if self._file_path == '' or not os.path.exists(self._file_path):
+            self._contents = None
+            return
+
         try:
             with open(self._file_path, 'r', encoding='utf8') as f:
                 reader = csv.reader(f)
