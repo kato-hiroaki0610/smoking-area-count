@@ -20,5 +20,5 @@ class TestFileReaderFortoml(unittest.TestCase):
 
         expect = dict
         actual = toml_reader.get_contents()
-        print(actual)
+
         self.assertEqual(expect, type(actual))
