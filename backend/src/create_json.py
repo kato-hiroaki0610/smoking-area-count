@@ -73,7 +73,8 @@ class CreateJson:
         json_dict['待ち人数'] = 'todo'
         json_dict['上限超え'] = self.is_capacity_over(detect_num)
 
-        self._created_json = json.dumps(json_dict)
+        # ensure_ascii=FalseでUnicodeを出力しないようにする
+        self._created_json = json.dumps(json_dict, ensure_ascii=False)
 
     def get_created_json(self) -> json:
         """作成したJsonを取得する
