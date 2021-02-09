@@ -8,7 +8,6 @@ from file_reader_for_csv import FileReaderForCSV as csv_reader
 
 class CreateJson:
     """JSONを作成するクラス"""
-
     def __init__(self, settings: Dict) -> None:
         """コンストラクタ
 
@@ -55,6 +54,7 @@ class CreateJson:
 
     def is_capacity_over(self, setting: dict, count: int) -> bool:
         """喫煙室が定員上限か判定する
+            Trueなら定員上限、Falseなら空きがある
 
         Args:
             count(int): 検知数
@@ -66,10 +66,10 @@ class CreateJson:
         if type(capacity_limit) != int:
             capacity_limit = int(capacity_limit)
 
-        if count <= capacity_limit:
-            return True
-        else:
+        if capacity_limit >= count:
             return False
+        else:
+            return True
 
     def execute_create(self) -> None:
         """リストと辞書からJsonを作成する"""

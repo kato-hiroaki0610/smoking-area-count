@@ -1,5 +1,6 @@
 """CreateJsonクラスのテスト"""
 
+import json
 import os
 import sys
 import unittest
@@ -66,28 +67,28 @@ class TestCreateJson(unittest.TestCase):
             '定員上限': 10,
         }
 
-        expected = True
+        expected = False
         actual = json_creater.is_capacity_over(contents, 9)
         self.assertEqual(expected, actual)
 
-        expected = True
+        expected = False
         actual = json_creater.is_capacity_over(contents, 10)
         self.assertEqual(expected, actual)
 
-        expected = False
+        expected = True
         actual = json_creater.is_capacity_over(contents, 11)
         self.assertEqual(expected, actual)
 
         contents['定員上限'] = '5'
-        expected = True
+        expected = False
         actual = json_creater.is_capacity_over(contents, 4)
         self.assertEqual(expected, actual)
 
-        expected = True
+        expected = False
         actual = json_creater.is_capacity_over(contents, 5)
         self.assertEqual(expected, actual)
 
-        expected = False
+        expected = True
         actual = json_creater.is_capacity_over(contents, 6)
         self.assertEqual(expected, actual)
 
@@ -105,19 +106,19 @@ class TestCreateJson(unittest.TestCase):
         })
 
         json_creater.execute_create()
-        json = json_creater._created_json
+        get_json = json_creater._created_json
         expected = 4
-        actual = len(json.split(','))
+        actual = len(get_json.split(','))
         self.assertEqual(expected, actual)
         expected = str
-        actual = type(json)
+        actual = type(get_json)
         self.assertEqual(expected, actual)
 
     def test_get_created_json(self):
         """get_created_jsonのテスト"""
         tests_dir = os.path.dirname(__file__)
         file_name = tests_dir + '/test_file/video_source.csv'
-        json_creater = CreateJson({
+        setting = {
             'detect_field_num':
             4,
             'area': [{
@@ -127,19 +128,75 @@ class TestCreateJson(unittest.TestCase):
                 '定員上限': 10
             }, {
                 '場所': '9階',
-                '利用者': 'bbb',
+                '利用者': file_name,
                 '待ち人数': '',
                 '定員上限': 3
             }, {
-                '場所': '10階',
+                '場所': 'aaa',
                 '利用者': 'ddd',
+                '待ち人数': file_name,
+                '定員上限': 11
+            }, {
+                '場所': 'bbb',
+                '利用者': file_name,
                 '待ち人数': '',
                 '定員上限': 11
             }]
-        })
+        }
+        json_creater = CreateJson(setting)
 
         json_creater.execute_create()
         created_json = json_creater.get_created_json()
+        json_dict = json.loads(created_json)
+
         expected = str
         actual = type(created_json)
+        self.assertEqual(expected, actual)
+
+        expected = setting['area'][0]['場所']
+        actual = json_dict[0]['階数']
+        self.assertEqual(expected, actual)
+
+        expected = 2
+        actual = json_dict[0]['利用者数']
+        self.assertEqual(expected, actual)
+
+        expected = 2
+        actual = json_dict[0]['待ち人数']
+        self.assertEqual(expected, actual)
+
+        expected = False
+        actual = json_dict[0]['上限超え']
+        self.assertEqual(expected, actual)
+
+        expected = setting['area'][1]['場所']
+        actual = json_dict[1]['階数']
+        self.assertEqual(expected, actual)
+
+        expected = ''
+        actual = json_dict[1]['待ち人数']
+        self.assertEqual(expected, actual)
+
+        expected = 2
+        actual = json_dict[1]['利用者数']
+        self.assertEqual(expected, actual)
+
+        expected = setting['area'][2]['場所']
+        actual = json_dict[2]['階数']
+        self.assertEqual(expected, actual)
+
+        expected = ''
+        actual = json_dict[2]['利用者数']
+        self.assertEqual(expected, actual)
+
+        expected = 2
+        actual = json_dict[2]['待ち人数']
+        self.assertEqual(expected, actual)
+
+        expected = 2
+        actual = json_dict[3]['利用者数']
+        self.assertEqual(expected, actual)
+
+        expected = ''
+        actual = json_dict[3]['待ち人数']
         self.assertEqual(expected, actual)
