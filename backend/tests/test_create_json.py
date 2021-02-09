@@ -46,8 +46,12 @@ class TestCreateJson(unittest.TestCase):
         expected = 9
         actual = json_creater.get_detect_column()
         self.assertEqual(expected, actual)
-        self.assertEqual(int, type(actual))
-        self.assertNotEqual(float, type(actual))
+
+        expected = int
+        actual = type(actual)
+        self.assertEqual(expected, actual)
+        expected = float
+        self.assertNotEqual(float, actual)
 
     def test_is_capacity_over(self):
         """is_capacity_overのテスト"""
