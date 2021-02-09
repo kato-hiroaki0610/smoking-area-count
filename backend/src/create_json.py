@@ -73,27 +73,35 @@ class CreateJson:
 
     def execute_create(self) -> None:
         """リストと辞書からJsonを作成する"""
-        json_dict = {}
+        json_dict = []
 
         for setting_area in self._setting['area']:
+            tmp_json = {}
             current_area = setting_area['場所']
-            json_dict['階数'] = current_area
+            tmp_json['階数'] = current_area
 
             # 利用者の最終行を取得する
             last_user_row = self.get_last_row(setting_area['利用者'])
             if last_user_row is not None:
                 user_detect_num = self.get_detect_column(last_user_row)
-                json_dict['利用者数'] = user_detect_num
+                tmp_json['利用者数'] = user_detect_num
 
-                json_dict['上限超え'] = self.is_capacity_over(
+                tmp_json['上限超え'] = self.is_capacity_over(
                     setting_area, user_detect_num)
+            else:
+                tmp_json['利用者数'] = ''
+                tmp_json['上限超え'] = ''
 
             # 待ち人数の最終行を取得する
             last_wait_user_row = self.get_last_row(setting_area['待ち人数'])
             if last_wait_user_row is not None:
                 wait_user_detect_num = self.get_detect_column(
                     last_wait_user_row)
-                json_dict['待ち人数'] = wait_user_detect_num
+                tmp_json['待ち人数'] = wait_user_detect_num
+            else:
+                tmp_json['待ち人数'] = ''
+
+            json_dict.append(tmp_json)
 
         # ensure_ascii=FalseでUnicodeを出力しないようにする
         self._created_json = json.dumps(json_dict, ensure_ascii=False)

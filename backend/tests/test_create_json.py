@@ -113,20 +113,31 @@ class TestCreateJson(unittest.TestCase):
 
     def test_get_created_json(self):
         """get_created_jsonのテスト"""
+        tests_dir = os.path.dirname(__file__)
+        file_name = tests_dir + '/test_file/video_source.csv'
         json_creater = CreateJson({
             'detect_field_num':
-            1,
+            4,
             'area': [{
                 '場所': '5階',
-                '利用者': '',
-                '待ち人数': '',
+                '利用者': file_name,
+                '待ち人数': file_name,
                 '定員上限': 10
+            }, {
+                '場所': '9階',
+                '利用者': 'bbb',
+                '待ち人数': '',
+                '定員上限': 3
+            }, {
+                '場所': '10階',
+                '利用者': 'ddd',
+                '待ち人数': '',
+                '定員上限': 11
             }]
         })
 
         json_creater.execute_create()
         created_json = json_creater.get_created_json()
-
         expected = str
         actual = type(created_json)
         self.assertEqual(expected, actual)
