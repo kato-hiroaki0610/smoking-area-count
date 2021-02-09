@@ -53,7 +53,7 @@ class CreateJson:
             定員上限か
         """
         # FIXME とりあえず5階を指定
-        capacity_limit = self._setting['capacity_limit']['5F']
+        capacity_limit = self._setting['capacity_limit']['5階']
 
         if type(capacity_limit) != int:
             capacity_limit = int(capacity_limit)

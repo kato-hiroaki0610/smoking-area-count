@@ -56,7 +56,7 @@ class TestCreateJson(unittest.TestCase):
         """is_capacity_overのテスト"""
         json_creater = CreateJson([[0, 1], [5, 10]],
                                   {'capacity_limit': {
-                                      '5F': 10
+                                      '5階': 10
                                   }})
 
         expected = True
@@ -71,7 +71,7 @@ class TestCreateJson(unittest.TestCase):
         actual = json_creater.is_capacity_over(11)
         self.assertEqual(expected, actual)
 
-        json_creater._setting['capacity_limit']['5F'] = '5'
+        json_creater._setting['capacity_limit']['5階'] = '5'
         expected = True
         actual = json_creater.is_capacity_over(4)
         self.assertEqual(expected, actual)
@@ -89,7 +89,7 @@ class TestCreateJson(unittest.TestCase):
         json_creater = CreateJson([[], [10, 10]], {
             'detect_field_num': 1,
             'capacity_limit': {
-                '5F': 10
+                '5階': 10
             }
         })
 
@@ -104,7 +104,7 @@ class TestCreateJson(unittest.TestCase):
         json_creater = CreateJson([[], [10, 10]], {
             'detect_field_num': 1,
             'capacity_limit': {
-                '5F': 10
+                '5階': 10
             }
         })
 
