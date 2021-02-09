@@ -1,7 +1,7 @@
 """CreateJsonクラスのテスト"""
 
-import sys
 import os
+import sys
 import unittest
 
 path = os.path.join(os.path.dirname(__file__), '../src')
@@ -12,7 +12,6 @@ from src.create_json import CreateJson  # noqa
 
 class TestCreateJson(unittest.TestCase):
     """CreateJsonクラスのテスト"""
-
     def test_get_last_row(self):
         """get_last_rowメソッドのテスト"""
         json_creater = CreateJson({})
@@ -106,9 +105,12 @@ class TestCreateJson(unittest.TestCase):
         })
 
         json_creater.execute_create()
-
+        json = json_creater._created_json
+        expected = 4
+        actual = len(json.split(','))
+        self.assertEqual(expected, actual)
         expected = str
-        actual = type(json_creater._created_json)
+        actual = type(json)
         self.assertEqual(expected, actual)
 
     def test_get_created_json(self):
