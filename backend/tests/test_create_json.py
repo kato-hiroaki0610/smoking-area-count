@@ -16,7 +16,6 @@ class TestCreateJson(unittest.TestCase):
         test_list = [[1, 2, 3], [3, 4, 5], [6, 7, 8]]
 
         expected = [6, 7, 8]
-
         actual = json_creater.get_last_row(test_list)
 
         self.assertEqual(expected, actual)
