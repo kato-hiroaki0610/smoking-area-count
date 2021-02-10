@@ -22,7 +22,6 @@ class FileReaderForCSV(FileReader):
 
     def load_file(self) -> None:
         """CSVを読み込む"""
-        # TODO    ログ
         # ファイルパスに何も格納されていない場足
         # CSVファイルが見つからなかった場合
         if self._file_path == '' or not os.path.exists(self._file_path):
@@ -32,13 +31,14 @@ class FileReaderForCSV(FileReader):
         try:
             with open(self._file_path, 'r', encoding='utf8') as f:
                 reader = csv.reader(f)
-
+                logger.debug(f'read: {self._file_path}')
                 # iteratorをリストに変換する
                 rows = [r for r in reader]
 
                 self._contents = rows
         except FileNotFoundError:
             error_value = f'{self._file_path}が見つかりませんでした'
+            logger.debug(error_value)
             raise FileNotFoundError(error_value)
 
     def get_contents(self) -> List[List]:

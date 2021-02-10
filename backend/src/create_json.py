@@ -1,9 +1,12 @@
 """JSONを作成するクラス"""
 
 import json
+import logging
 from typing import Dict, List
 
 from file_reader_for_csv import FileReaderForCSV as csv_reader
+
+logger = logging.getLogger(__name__)
 
 
 class CreateJson:
@@ -74,6 +77,7 @@ class CreateJson:
     def execute_create(self) -> None:
         """リストと辞書からJsonを作成する"""
         json_dict = []
+        logger.debug(f'setting: {self._setting}')
 
         for setting_area in self._setting['area']:
             tmp_json = {}
@@ -105,6 +109,7 @@ class CreateJson:
 
         # ensure_ascii=FalseでUnicodeを出力しないようにする
         self._created_json = json.dumps(json_dict, ensure_ascii=False)
+        logger.debug(f'created: {self._created_json}')
 
     def get_created_json(self) -> json:
         """作成したJsonを取得する

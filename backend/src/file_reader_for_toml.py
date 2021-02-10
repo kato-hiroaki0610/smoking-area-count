@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 class FileReaderForToml(FileReader):
     """設定が記載されたTomlファイルの処理を行うクラス"""
-
     def set_file_path(self, file_path):
         """フィールドにtomlファイルのパスをセットする
 
@@ -25,10 +24,11 @@ class FileReaderForToml(FileReader):
         try:
             with open(self._file_path, encoding='utf8') as f:
                 toml_file = toml.load(f)
-
+                logger.debug(f'read: {self._file_path}')
                 self._contents = toml_file
         except FileNotFoundError:
             error_value = f'{self._file_path}が見つかりませんでした'
+            logger.debug(error_value)
             raise FileNotFoundError(error_value)
 
     def get_contents(self):
