@@ -13,12 +13,10 @@ log = Log()
 
 
 @app.get('/')
-def root():
+async def root():
     log.set_logger()
-
-    setting_file_name = os.path.dirname(
-        __file__) + f'/{SETTING_FILE_DIR}/{SETTING_FILE_NAME}'
-
+    setting_file_name = os.path.join(os.path.dirname(__file__),
+                                     SETTING_FILE_DIR, SETTING_FILE_NAME)
     log.logger.info(setting_file_name)
 
     toml_reader = FileReaderForToml()
