@@ -108,7 +108,11 @@ class CreateJson:
             json_dict.append(tmp_json)
 
         # ensure_ascii=FalseでUnicodeを出力しないようにする
-        self._created_json = json.dumps(json_dict, ensure_ascii=False)
+        # json.dumpsでjsonstringにすると、FastAPIでブラウザに表示するさいに
+        # ダブルクォートがエスケープされる、ためDictを所持する。
+        # ex: {\"hoge\": \"fuga\"}
+        # self._created_json = json.dumps(json_dict, ensure_ascii=False)
+        self._created_json = json_dict
         logger.debug(f'created: {self._created_json}')
 
     def get_created_json(self) -> json:
