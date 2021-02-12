@@ -32,7 +32,7 @@ def read_toml() -> dict:
 
 
 @app.get('/')
-def main() -> json:
+async def main() -> json:
     toml = read_toml()
 
     json_creater = CreateJson(toml)
@@ -44,7 +44,7 @@ def main() -> json:
 
 
 @app.get('/specified/{room}')
-def specified_room(room: str):
+async def specified_room(room: str):
     detect_field_num_key = 'detect_field_num'
     toml = read_toml()
 
