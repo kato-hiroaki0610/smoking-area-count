@@ -22,12 +22,6 @@ class FileReaderForCSV(FileReader):
 
     def load_file(self) -> None:
         """CSVを読み込む"""
-        # ファイルパスに何も格納されていない場足
-        # CSVファイルが見つからなかった場合
-        if self._file_path == '' or not os.path.exists(self._file_path):
-            self._contents = None
-            return
-
         try:
             with open(self._file_path, 'r', encoding='utf8') as f:
                 reader = csv.reader(f)
@@ -37,6 +31,7 @@ class FileReaderForCSV(FileReader):
 
                 self._contents = rows
         except FileNotFoundError:
+            self._contents = None
             error_value = f'{self._file_path}が見つかりませんでした'
             logger.debug(error_value)
             raise FileNotFoundError(error_value)
