@@ -5,10 +5,7 @@ import os
 import sys
 import unittest
 
-path = os.path.join(os.path.dirname(__file__), '../src')
-sys.path.append(path)
-
-from src.create_json import CreateJson  # noqa
+from create_json import CreateJson
 
 
 class TestCreateJson(unittest.TestCase):

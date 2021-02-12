@@ -2,10 +2,7 @@ import os
 import sys
 import unittest
 
-path = os.path.join(os.path.dirname(__file__), '../src')
-sys.path.append(path)
-
-from file_reader_for_toml import FileReaderForToml as frt  # noqa
+from file_reader_for_toml import FileReaderForToml as frt
 
 
 class TestFileReaderFortoml(unittest.TestCase):
