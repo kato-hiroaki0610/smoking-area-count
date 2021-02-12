@@ -2,7 +2,6 @@ import os
 
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 
 from create_json import CreateJson
 from file_reader_for_toml import FileReaderForToml
@@ -33,4 +32,9 @@ def main():
 
     log.logger.debug(created_json)
 
-    return JSONResponse(content=created_json)
+    return {'room_status': created_json}
+
+
+@app.post('/specified')
+def specified_room():
+    pass
