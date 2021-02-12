@@ -57,6 +57,9 @@ def specified_room(room: str):
             target_room['area'] = [area]
             break
 
+    if 'area' not in target_room.keys():
+        return {'specified_room_status': {}}
+
     json_creater = CreateJson(target_room)
     json_creater.execute_create()
     created_json = jsonable_encoder(json_creater.get_created_json())
