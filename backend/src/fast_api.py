@@ -2,6 +2,8 @@ import os
 
 from create_json import CreateJson
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from file_reader_for_toml import FileReaderForToml
 from logger import Log
 
@@ -13,7 +15,7 @@ log = Log()
 
 
 @app.get('/')
-async def root():
+def main():
     log.set_logger()
     setting_file_name = os.path.join(os.path.dirname(__file__),
                                      SETTING_FILE_DIR, SETTING_FILE_NAME)
@@ -26,9 +28,8 @@ async def root():
 
     json_creater = CreateJson(toml)
     json_creater.execute_create()
-    created_json = json_creater.get_created_json()
+    created_json = jsonable_encoder(json_creater.get_created_json())
 
     log.logger.debug(created_json)
 
-    # FIXME JSONResponse
-    return created_json
+    return JSONResponse(content=created_json)
