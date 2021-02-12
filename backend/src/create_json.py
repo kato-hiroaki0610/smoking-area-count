@@ -28,15 +28,21 @@ class CreateJson:
         Return:
             読み込んだCSVから最終行のみを返す
         """
-        reader = csv_reader()
-        reader.set_file_path(file_name_path)
-        reader.load_file()
-        rows = reader.get_contents()
+        try:
+            reader = csv_reader()
+            reader.set_file_path(file_name_path)
+            reader.load_file()
+            rows = reader.get_contents()
 
-        if rows is None:
+            # ファイルは存在するが空の場合
+            if rows is None:
+                return None
+
+            return rows[-1]
+        except FileNotFoundError:
             return None
-
-        return rows[-1]
+        except FileExistsError:
+            return None
 
     def get_detect_column(self, last_row: List) -> int:
         """最終行から検知数を取得する
@@ -89,7 +95,6 @@ class CreateJson:
             if last_user_row is not None:
                 user_detect_num = self.get_detect_column(last_user_row)
                 tmp_json['利用者数'] = user_detect_num
-
                 tmp_json['上限超え'] = self.is_capacity_over(
                     setting_area, user_detect_num)
             else:
@@ -107,11 +112,6 @@ class CreateJson:
 
             json_dict.append(tmp_json)
 
-        # ensure_ascii=FalseでUnicodeを出力しないようにする
-        # json.dumpsでjsonstringにすると、FastAPIでブラウザに表示するさいに
-        # ダブルクォートがエスケープされる、ためDictを所持する。
-        # ex: {\"hoge\": \"fuga\"}
-        # self._created_json = json.dumps(json_dict, ensure_ascii=False)
         self._created_json = json_dict
         logger.debug(f'created: {self._created_json}')
 

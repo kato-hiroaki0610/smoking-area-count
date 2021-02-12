@@ -21,10 +21,13 @@ def main():
                                      SETTING_FILE_DIR, SETTING_FILE_NAME)
     log.logger.info(setting_file_name)
 
-    toml_reader = FileReaderForToml()
-    toml_reader.set_file_path(setting_file_name)
-    toml_reader.load_file()
-    toml = toml_reader.get_contents()
+    try:
+        toml_reader = FileReaderForToml()
+        toml_reader.set_file_path(setting_file_name)
+        toml_reader.load_file()
+        toml = toml_reader.get_contents()
+    except FileNotFoundError:
+        return
 
     json_creater = CreateJson(toml)
     json_creater.execute_create()
