@@ -9,6 +9,7 @@ pycodestyle==2.6.0
 pydantic==1.7.3
 python-dotenv==0.15.0
 PyYAML==5.4.1
+requests==2.25.1
 six==1.15.0
 starlette==0.13.6
 testfixtures==6.17.1
