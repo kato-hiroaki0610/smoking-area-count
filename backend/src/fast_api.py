@@ -17,6 +17,11 @@ log.set_logger()
 
 
 def read_toml() -> dict:
+    """設定ファイルを読み込む関数
+
+    Returns:
+        dict: 読み込んだ設定ファイル
+    """
     setting_file_name = os.path.join(os.path.dirname(__file__),
                                      SETTING_FILE_DIR, SETTING_FILE_NAME)
     log.logger.info(setting_file_name)
@@ -33,9 +38,15 @@ def read_toml() -> dict:
 
 @app.get('/')
 async def main() -> json:
-    toml = read_toml()
+    """fast apiのエントリーポイント
+    設定ファイルに基づきログファイルから部屋状況を取得する
 
-    json_creater = CreateJson(toml)
+    Returns:
+        json: 設定ファイルに記載された部屋情報
+    """
+    setting = read_toml()
+
+    json_creater = CreateJson(setting)
     json_creater.execute_create()
     created_json = jsonable_encoder(json_creater.get_created_json())
     log.logger.debug(created_json)
@@ -44,14 +55,23 @@ async def main() -> json:
 
 
 @app.get('/specified/{room}')
-async def specified_room(room: str):
+async def specified_room(room: str) -> json:
+    """指定した一つの部屋の情報を取得する
+
+    Args:
+        room (str): 部屋名
+
+    Returns:
+        json: 指定された部屋情報、
+              存在しない部屋がしていされた場合は空のdictを返す
+    """
     detect_field_num_key = 'detect_field_num'
-    toml = read_toml()
+    setting = read_toml()
 
     target_room = {}
-    target_room[detect_field_num_key] = toml[detect_field_num_key]
+    target_room[detect_field_num_key] = setting[detect_field_num_key]
 
-    for area in toml['area']:
+    for area in setting['area']:
         if area['場所'] == room:
             # 処理の共通化のため、areaはリストで格納された辞書とする
             target_room['area'] = [area]
