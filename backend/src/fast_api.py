@@ -1,8 +1,11 @@
 import json
 import os
+from typing import List
 
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
+from fastapi.params import Query
+from pydantic.fields import Required
 
 from create_json import CreateJson
 from file_reader_for_toml import FileReaderForToml
@@ -87,3 +90,39 @@ async def specified_room(room: str) -> json:
     log.logger.debug(created_json)
 
     return {'specified_room_status': created_json}
+
+
+@app.get('/multiple')
+async def multiple_room(rooms: List[str] = Query(Required)) -> json:
+    """指定した複数の部屋の情報を取得する
+
+    Args:
+        rooms (List[str]): 部屋名
+
+    Returns:
+        json: 指定された部屋情報、
+              存在しない部屋がしていされた場合は空のdictを返す
+    """
+    detect_field_num_key = 'detect_field_num'
+    setting = read_toml()
+
+    target_room = {}
+    target_room[detect_field_num_key] = setting[detect_field_num_key]
+
+    target_room['area'] = []
+    for room in rooms:
+        for area in setting['area']:
+            if area['場所'] == room:
+                target_room['area'].append(area)
+                break
+
+    if 'area' not in target_room.keys():
+        return {'multiple_room_status': {}}
+
+    json_creater = CreateJson(target_room)
+    json_creater.execute_create()
+    created_json = jsonable_encoder(json_creater.get_created_json())
+
+    log.logger.debug(created_json)
+
+    return {'multiple_room_status': created_json}
