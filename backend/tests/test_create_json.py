@@ -1,8 +1,6 @@
 """CreateJsonクラスのテスト"""
 
-import json
 import os
-import sys
 import unittest
 
 from create_json import CreateJson
@@ -105,10 +103,12 @@ class TestCreateJson(unittest.TestCase):
         json_creater.execute_create()
         get_json = json_creater._created_json
         expected = 4
-        actual = len(get_json.split(','))
+
+        actual = len(get_json[0])
         self.assertEqual(expected, actual)
-        expected = str
-        actual = type(get_json)
+
+        expected = [list, dict]
+        actual = [type(get_json), type(get_json[0])]
         self.assertEqual(expected, actual)
 
     def test_get_created_json(self):
@@ -144,56 +144,55 @@ class TestCreateJson(unittest.TestCase):
 
         json_creater.execute_create()
         created_json = json_creater.get_created_json()
-        json_dict = json.loads(created_json)
 
-        expected = str
-        actual = type(created_json)
+        expected = [list, dict]
+        actual = [type(created_json), type(created_json[0])]
         self.assertEqual(expected, actual)
 
         expected = setting['area'][0]['場所']
-        actual = json_dict[0]['階数']
+        actual = created_json[0]['階数']
         self.assertEqual(expected, actual)
 
         expected = 2
-        actual = json_dict[0]['利用者数']
+        actual = created_json[0]['利用者数']
         self.assertEqual(expected, actual)
 
         expected = 2
-        actual = json_dict[0]['待ち人数']
+        actual = created_json[0]['待ち人数']
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = json_dict[0]['上限超え']
+        actual = created_json[0]['上限超え']
         self.assertEqual(expected, actual)
 
         expected = setting['area'][1]['場所']
-        actual = json_dict[1]['階数']
+        actual = created_json[1]['階数']
         self.assertEqual(expected, actual)
 
         expected = ''
-        actual = json_dict[1]['待ち人数']
+        actual = created_json[1]['待ち人数']
         self.assertEqual(expected, actual)
 
         expected = 2
-        actual = json_dict[1]['利用者数']
+        actual = created_json[1]['利用者数']
         self.assertEqual(expected, actual)
 
         expected = setting['area'][2]['場所']
-        actual = json_dict[2]['階数']
+        actual = created_json[2]['階数']
         self.assertEqual(expected, actual)
 
         expected = ''
-        actual = json_dict[2]['利用者数']
+        actual = created_json[2]['利用者数']
         self.assertEqual(expected, actual)
 
         expected = 2
-        actual = json_dict[2]['待ち人数']
+        actual = created_json[2]['待ち人数']
         self.assertEqual(expected, actual)
 
         expected = 2
-        actual = json_dict[3]['利用者数']
+        actual = created_json[3]['利用者数']
         self.assertEqual(expected, actual)
 
         expected = ''
-        actual = json_dict[3]['待ち人数']
+        actual = created_json[3]['待ち人数']
         self.assertEqual(expected, actual)
