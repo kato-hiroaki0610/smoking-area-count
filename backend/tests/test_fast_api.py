@@ -51,7 +51,7 @@ class TestFastAPI(unittest.TestCase):
 
     def test_specified_room(self):
         target_room = '5階'
-        response = self.client.get(f'/specified/{target_room}')
+        response = self.client.get(f'/specified?room={target_room}')
 
         expected = 200
         actual = response.status_code

@@ -54,7 +54,7 @@ async def main() -> json:
     return {'room_status': created_json}
 
 
-@app.get('/specified/{room}')
+@app.get('/specified')
 async def specified_room(room: str) -> json:
     """指定した一つの部屋の情報を取得する
 
