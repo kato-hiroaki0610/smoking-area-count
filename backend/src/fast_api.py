@@ -116,6 +116,7 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
     target_room[detect_field_num_key] = setting[detect_field_num_key]
 
     target_room['area'] = []
+
     for room in rooms:
         for area in setting['area']:
             if area['場所'] == room:
@@ -123,7 +124,7 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
                 break
 
     # 存在部屋をURLに打ち込んだ場合
-    if 'area' not in target_room.keys():
+    if len(target_room['area']) == 0:
         error_result = {'detail': [{'msg': 'room not found'}]}
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT,
                             content=error_result)
