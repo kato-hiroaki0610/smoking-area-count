@@ -2,10 +2,11 @@ import json
 import os
 from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.params import Query
 from pydantic.fields import Required
+from starlette.responses import JSONResponse
 
 from create_json import CreateJson
 from file_reader_for_toml import FileReaderForToml
@@ -80,8 +81,11 @@ async def specified_room(room: str) -> json:
             target_room['area'] = [area]
             break
 
+    # 存在部屋をURLに打ち込んだ場合
     if 'area' not in target_room.keys():
-        return {'specified_room_status': {}}
+        error_result = {'detail': [{'msg': 'room not found'}]}
+        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT,
+                            content=error_result)
 
     json_creater = CreateJson(target_room)
     json_creater.execute_create()
@@ -89,7 +93,9 @@ async def specified_room(room: str) -> json:
 
     log.logger.debug(created_json)
 
-    return {'specified_room_status': created_json}
+    # return {'specified_room_status': created_json}
+    return JSONResponse(status_code=status.HTTP_200_OK,
+                        content={'specified_room_status': created_json})
 
 
 @app.get('/multiple')
@@ -116,8 +122,11 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
                 target_room['area'].append(area)
                 break
 
+    # 存在部屋をURLに打ち込んだ場合
     if 'area' not in target_room.keys():
-        return {'multiple_room_status': {}}
+        error_result = {'detail': [{'msg': 'room not found'}]}
+        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT,
+                            content=error_result)
 
     json_creater = CreateJson(target_room)
     json_creater.execute_create()
@@ -125,4 +134,5 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
 
     log.logger.debug(created_json)
 
-    return {'multiple_room_status': created_json}
+    return JSONResponse(status_code=status.HTTP_200_OK,
+                        content={'multiple_room_status': created_json})
