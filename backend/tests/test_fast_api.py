@@ -36,7 +36,18 @@ class TestFastAPI(unittest.TestCase):
             '上限超え': '',
             '待ち人数': 10
         }]
-        actual = response.json()
+        response_json = response.json()
+
+        expected = dict
+        actual = type(response_json)
+
+        expected = len(expecteds[0])
+        actual = response_json['room_status']
+
+        self.assertEqual(expected, len(actual))
 
         for i in range(len(expecteds)):
-            self.assertEqual(expecteds[i], actual['room_status'][i])
+            self.assertEqual(expecteds[i], actual[i])
+
+    def test_specified_room(self):
+        pass
