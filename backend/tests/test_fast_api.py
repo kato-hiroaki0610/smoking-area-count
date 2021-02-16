@@ -92,3 +92,7 @@ class TestFastAPI(unittest.TestCase):
             if expecteds[i]['階数'] == target_room:
                 self.assertEqual(expecteds[i], actual[i])
                 break
+
+    def test_multiple_room(self):
+        response = self.client.get('/multiple?rooms=5階&rooms=9階')
+        pass
