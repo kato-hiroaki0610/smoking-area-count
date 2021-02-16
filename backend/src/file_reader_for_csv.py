@@ -2,7 +2,6 @@
 
 import csv
 import logging
-import os
 from typing import List
 
 from file_reader import FileReader
