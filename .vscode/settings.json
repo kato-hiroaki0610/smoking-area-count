@@ -1,0 +1,11 @@
+{
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "python.pythonPath": "D:\\Dev\\miniconda\\envs\\smoking-area-count\\python.exe",
+  "python.linting.flake8Enabled": true,
+  "autoDocstring.docstringFormat": "google",
+  "python.envFile": "${workspaceFolder}/.vscode/.env"
+}
