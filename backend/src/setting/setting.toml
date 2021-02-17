@@ -1,0 +1,38 @@
+# CSVの検知数が格納されているカラムの列番号
+detect_field_num = 4
+
+[[area]]
+# 喫煙室の場所
+'場所' = '5階'
+# 利用者、待ち人数のlogファイルの場所を「絶対パス」で記載、なければ空文字列とする
+'利用者' = 'E:\project\rework\smoking-area-count\backend\src\test_file\video_source.csv'
+'待ち人数' = 'E:\project\rework\smoking-area-count\backend\src\test_file\video_source_1.csv'
+# 定員上限を記載
+'定員上限' = 7
+
+[[area]]
+# 喫煙室の場所
+'場所' = '9階'
+# 利用者、待ち人数のlogファイルの場所を「絶対パス」で記載、なければ空文字列とする
+'利用者' = 'E:\project\rework\smoking-area-count\backend\src\test_file\video_source_10.csv'
+'待ち人数' = ''
+# 定員上限を記載
+'定員上限' = 7
+
+[[area]]
+# 喫煙室の場所
+'場所' = '11階'
+# 利用者、待ち人数のlogファイルの場所を「絶対パス」で記載、なければ空文字列とする
+'利用者' = ''
+'待ち人数' = 'E:\project\rework\smoking-area-count\backend\src\test_file\video_source_2.csv'
+# 定員上限を記載
+'定員上限' = 10
+
+[[area]]
+# 喫煙室の場所
+'場所' = '12階'
+# 利用者、待ち人数のlogファイルの場所を「絶対パス」で記載、なければ空文字列とする
+'利用者' = 'E:\project\rework\smoking-area-count\backend\src\test_file\video_source_fauler.csv'
+'待ち人数' = 'E:\project\rework\smoking-area-count\backend\src\test_file\video_source_1.csv'
+# 定員上限を記載
+'定員上限' = 2
