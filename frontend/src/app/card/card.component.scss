@@ -4,7 +4,7 @@
   color: white;
   background-color: #1976d2;
   height: 16px;
-  width: 168px;
+  width: 320px;
   margin: 10px 8px 30px;
   padding: 16px;
   display: flex;
@@ -12,7 +12,7 @@
   align-items: center;
   line-height: 16px;
   font-weight: 600;
-  min-width: 35%;
+  min-width: 30%;
   position: relative;
 }
 
@@ -21,8 +21,8 @@
 }
 
 svg#circle {
-  width: 80px;
+  width: 70px;
   position: absolute;
   left: -10px;
-  top: -24px;
+  top: -29px;
 }
