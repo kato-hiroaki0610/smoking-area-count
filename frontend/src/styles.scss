@@ -37,10 +37,6 @@ $smoking-area-count-theme: mat-dark-theme((
 // that you are using.
 @include angular-material-theme($smoking-area-count-theme);
 
-.dark-theme {
-  @include angular-material-theme($smoking-area-count-theme);
-}
-
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
