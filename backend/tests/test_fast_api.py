@@ -148,12 +148,6 @@ class TestFastAPI(unittest.TestCase):
         for i in range(len(expecteds)):
             self.assertEqual(expecteds[i], actual[i])
 
-        response = self.client.get('/multiple?'
-                                   f'rooms={target_rooms[0]}'
-                                   f'&rooms={target_rooms[1]}'
-                                   f'&rooms={target_rooms[2]}')
-        response_json = response.json()
-
         expecteds = [{
             '階数': '5階',
             '利用者数': 2,
@@ -170,6 +164,12 @@ class TestFastAPI(unittest.TestCase):
             '上限超え': '',
             '待ち人数': 10
         }]
+
+        response = self.client.get('/multiple?'
+                                   f'rooms={target_rooms[0]}'
+                                   f'&rooms={target_rooms[1]}'
+                                   f'&rooms={target_rooms[2]}')
+        response_json = response.json()
 
         expected = len(expecteds[0])
         actual = response_json['multiple_room_status']
@@ -200,3 +200,26 @@ class TestFastAPI(unittest.TestCase):
         expected = 'field required'
         actual = response_json['detail'][0]['msg']
         self.assertEqual(expected, actual)
+
+        expecteds = [{
+            '階数': '5階',
+            '利用者数': 2,
+            '上限超え': False,
+            '待ち人数': 10
+        }, {
+            '階数': '12階',
+            '利用者数': '',
+            '上限超え': '',
+            '待ち人数': 10
+        }]
+
+        response = self.client.get('/multiple?'
+                                   f'rooms={target_rooms[0]}'
+                                   f'&rooms=ff階'
+                                   f'&rooms={target_rooms[2]}')
+        response_json = response.json()
+
+        actual = response_json['multiple_room_status']
+
+        for i in range(len(expecteds)):
+            self.assertEqual(expecteds[i], actual[i])
