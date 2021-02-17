@@ -1,0 +1,28 @@
+.card {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  color: white;
+  background-color: #1976d2;
+  height: 16px;
+  width: 168px;
+  margin: 10px 8px 30px;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 16px;
+  font-weight: 600;
+  min-width: 35%;
+  position: relative;
+}
+
+.card span {
+  margin-left: 60px;
+}
+
+svg#circle {
+  width: 80px;
+  position: absolute;
+  left: -10px;
+  top: -24px;
+}
