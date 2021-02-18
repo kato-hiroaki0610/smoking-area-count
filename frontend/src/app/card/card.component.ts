@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomService } from '../room.service';
 import { Room } from './room-info';
-import { Rooms } from './mock-card';
 
 @Component({
   selector: 'app-card',
@@ -12,10 +11,14 @@ import { Rooms } from './mock-card';
 export class CardComponent implements OnInit {
   rooms: Room[];
 
-  constructor() { }
+  constructor(private roomService: RoomService) { }
 
   ngOnInit(): void {
-    this.rooms = Rooms;
+    this.getRooms();
+  }
+
+  getRooms(): void {
+    this.rooms = this.roomService.getRooms();
   }
 
 }
