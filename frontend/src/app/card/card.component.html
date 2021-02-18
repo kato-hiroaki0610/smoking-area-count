@@ -1,15 +1,17 @@
-<ng-container *ngFor="let room of rooms">
-  <div class="card">
-    <span>
-      {{room.room}}<br>
-      利用者: {{room.use}}人
-      待機中: {{room.wait}}人
-      定員上限: {{room.limit}}人
-    </span>
-    <svg id="circle_svg" alt="circle" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
-      <g transform="translate(-141 -696)">
-        <circle class="limit_color" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)" />
-      </g>
-    </svg>
-  </div>
-</ng-container>
+<div class="content" role="main">
+  <ng-container *ngFor="let room of rooms">
+    <div class="card">
+      <span>
+        {{room.room}}<br>
+        利用者: {{room.use}}人
+        待機中: {{room.wait}}人
+        定員上限: {{room.limit}}人
+      </span>
+      <svg id="circle_svg" alt="circle" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
+        <g transform="translate(-141 -696)">
+          <circle class="limit_color" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)" />
+        </g>
+      </svg>
+    </div>
+  </ng-container>
+</div>
