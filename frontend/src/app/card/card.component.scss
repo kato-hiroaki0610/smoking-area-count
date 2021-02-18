@@ -1,8 +1,8 @@
 .card {
   border-radius: 4px;
-  border: 1px solid #eee;
+  border: 1px solid #609cd5;
   color: white;
-  background-color: #2864a1;
+  background-color: #3d87ce;
   height: 64px;
   width: 85vw;
   margin: 10px 8px 30px;
@@ -21,19 +21,24 @@
   line-height: 30px;
 }
 
+.card div {
+  margin-left: 60px;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 30px;
+}
+
 #circle_svg {
   width: 100px;
   position: absolute;
   left: -24px;
   top: -8px;
-  stroke: white;
-  stroke-width: 2px;
 }
 
 .unlimit_color {
-  fill: #00dd31
+  fill: #58db72
 }
 
 .limit_color {
-  fill: #dd0031;
+  fill: #c04a4a;
 }
