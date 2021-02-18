@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { Room } from './card/room-info';
 import { Rooms } from './card/mock-card';
 
@@ -9,7 +10,8 @@ export class RoomService {
 
   constructor() { }
 
-  getRooms(): Room[] {
-    return Rooms;
+  getRooms(): Observable<Room[]> {
+    const rooms = of(Rooms);
+    return rooms;
   }
 }

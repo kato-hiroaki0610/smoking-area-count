@@ -18,7 +18,8 @@ export class CardComponent implements OnInit {
   }
 
   getRooms(): void {
-    this.rooms = this.roomService.getRooms();
+    this.roomService.getRooms()
+        .subscribe(rooms => this.rooms = rooms);
   }
 
 }
