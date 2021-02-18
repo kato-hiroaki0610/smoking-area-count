@@ -1,21 +1,21 @@
 .header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  // background-color: #202120;
-  background-color: #3d87ce;
-  color: white;
-  font-weight: 600;
-  // border-bottom: solid 5px #141414;
-  border-bottom: solid 5px #609cd5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    // background-color: #202120;
+    background-color: #3d87ce;
+    color: white;
+    font-weight: 600;
+    // border-bottom: solid 5px #141414;
+    border-bottom: solid 5px #609cd5;
 }
 
 div#title {
-  font-size: 20px;
-  margin-left: 10px;
-  flex: 1;
+    font-size: 20px;
+    margin-left: 10px;
+    flex: 1;
 }
