@@ -9,8 +9,6 @@ import { Rooms } from './mock-card';
   styleUrls: ['./card.component.scss']
 })
 
-
-
 export class CardComponent implements OnInit {
   rooms: Room[];
 
