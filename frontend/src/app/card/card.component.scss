@@ -3,28 +3,29 @@
   border: 1px solid #eee;
   color: white;
   background-color: #2864a1;
-  height: 16px;
+  height: 64px;
   width: 85vw;
   margin: 10px 8px 30px;
-  padding: 16px;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  line-height: 16px;
-  font-weight: 600;
   min-width: 30%;
   position: relative;
 }
 
 .card span {
   margin-left: 60px;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 30px;
 }
 
 #circle_svg {
-  width: 70px;
+  width: 100px;
   position: absolute;
-  left: -12px;
-  top: -29px;
+  left: -24px;
+  top: -8px;
   stroke: white;
   stroke-width: 2px;
 }
