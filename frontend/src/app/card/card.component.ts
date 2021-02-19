@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomService } from '../room.service';
-import { Room } from './room-info';
+import { Room, RoomStatus } from './room-info';
 
 @Component({
   selector: 'app-card',
@@ -9,7 +9,7 @@ import { Room } from './room-info';
 })
 
 export class CardComponent implements OnInit {
-  rooms: Room[];
+  roomStatus: RoomStatus[];
 
   constructor(private roomService: RoomService) { }
 
@@ -19,7 +19,17 @@ export class CardComponent implements OnInit {
 
   getRooms(): void {
     this.roomService.getRooms()
-        .subscribe(rooms => this.rooms = rooms);
+        .subscribe(rooms => {
+          const room: Room[] = rooms;
+          // 文字列でアクセスしたら、エラーが表示される。
+          // ピリオドでアクセスしたら動かないためtslintで
+          // no-string-literalをdisableにする
+          // tslint:disable-next-line:no-string-literal
+          this.roomStatus = room['room_status'];
+          console.log(this.roomStatus);
+        },
+        error => {
+          console.error(error.status + ':' + error.statusText);
+        });
   }
-
 }

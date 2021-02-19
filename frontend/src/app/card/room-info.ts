@@ -3,8 +3,8 @@ export interface Room {
 }
 
 export interface RoomStatus {
-  階数: string;
-  利用者数: number;
-  上限超え: boolean;
-  待ち人数: number;
+  room: string;
+  use: number;
+  limit: boolean;
+  wait: number;
 }
