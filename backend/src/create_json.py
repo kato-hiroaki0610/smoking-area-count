@@ -95,11 +95,11 @@ class CreateJson:
             if last_user_row is not None:
                 user_detect_num = self.get_detect_column(last_user_row)
                 tmp_json['use'] = user_detect_num
-                tmp_json['limit'] = self.is_capacity_over(
+                tmp_json['is_limit'] = self.is_capacity_over(
                     setting_area, user_detect_num)
             else:
                 tmp_json['use'] = ''
-                tmp_json['limit'] = ''
+                tmp_json['is_limit'] = ''
 
             # 待ち人数の最終行を取得する
             last_wait_user_row = self.get_last_row(setting_area['待ち人数'])
@@ -109,6 +109,8 @@ class CreateJson:
                 tmp_json['wait'] = wait_user_detect_num
             else:
                 tmp_json['wait'] = ''
+
+            tmp_json['limit'] = setting_area['定員上限']
 
             json_dict.append(tmp_json)
 
