@@ -1,3 +1,12 @@
+$card_height: 128px;
+$card_padding_height: 10px;
+$card_margin_height: 10px;
+$spacer_color: #0f477a;
+$card_color: #3d87ce;
+$card_border_color: #609cd5;
+$user_limit_color: #c04a4a;
+$user_unlimit_color: #58db72;
+$circle_size: 180px;
 .content {
     display: flex;
     margin: 82px auto 32px;
@@ -9,13 +18,13 @@
 
 .card {
     border-radius: 4px;
-    border: 1px solid #609cd5;
+    border: 1px solid card_border_color;
     color: white;
-    background-color: #3d87ce;
-    height: 64px;
+    background-color: $card_color;
+    height: $card_height;
     width: 85vw;
     margin: 10px 8px 30px;
-    padding: 10px;
+    padding: $card_padding_height;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -25,7 +34,7 @@
 }
 
 .card_font {
-    font-size: 20px;
+    font-size: 40px;
     font-weight: 800;
 }
 
@@ -36,15 +45,15 @@
 }
 
 .vertical_line {
-    border-left: 6px solid #0f477a;
+    border-left: 6px solid $spacer_color;
     position: absolute;
     right: 200px;
-    height: 85px;
+    height: calc(#{$card_height} + #{$card_padding_height} + #{$card_margin_height});
 }
 
 .room_wrap {
     width: 200px;
-    height: 85px;
+    height: calc(#{$card_height} + #{$card_padding_height} + #{$card_margin_height});
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -53,16 +62,16 @@
 
 .room_wrap div {
     height: 20px;
-    padding: 5px;
+    padding: 20px;
 }
 
 .room_use_wrap {
-    border: dashed #0f477a;
+    border: dashed $spacer_color;
     border-width: 0 6px 0 6px;
 }
 
 .room_wait_wrap {
-    border: dashed #0f477a;
+    border: dashed $spacer_color;
     border-width: 0 6px 0 0;
 }
 
@@ -73,17 +82,16 @@
 }
 
 #circle_svg {
-    width: 100px;
+    width: $circle_size;
+    height: $circle_size;
     position: absolute;
-    left: -24px;
-    top: -8px;
-    z-index: 0;
+    left: -50px;
 }
 
 .unlimit_color {
-    fill: #58db72
+    fill: $user_limit_color;
 }
 
 .limit_color {
-    fill: #c04a4a;
+    fill: $user_unlimit_color;
 }
