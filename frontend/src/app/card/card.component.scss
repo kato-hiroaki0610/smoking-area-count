@@ -1,14 +1,20 @@
 $card_width: 85vw;
-$card_height: 128px;
+$card_height: 200px;
 $card_padding_height: 10px;
 $card_margin_height: 10px;
+$card_border_height: 1px;
+$card_font_size: 60px;
+$room_use_and_wait_contents_size: 250px;
+$room_limit_contents_size: 300px;
+// 実際に画面に表示されるカードの高さ paddingやborderの高さも含めた値
+$card_view_height: calc(#{$card_height} + (#{$card_padding_height} * 2) + (#{$card_border_height} * 2));
 $spacer_color: #90caf9;
 $spacer_size: 6px;
 $card_color: #2196f3;
 $card_border_color: #64b5f6;
 $user_limit_color: #b00020;
 $user_unlimit_color: #00b020;
-$circle_size: 180px;
+$circle_size: 250px;
 .content {
     display: flex;
     margin: 82px auto 32px;
@@ -36,26 +42,18 @@ $circle_size: 180px;
 }
 
 .card_font {
-    font-size: 40px;
+    font-size: $card_font_size;
     font-weight: 800;
 }
 
 .card .room {
     position: absolute;
-    left: 9px;
+    left: 0;
     z-index: 1;
 }
 
-.vertical_line {
-    border-left: $spacer_size solid $spacer_color;
-    position: absolute;
-    right: 200px;
-    height: calc(#{$card_height} + #{$card_padding_height} + #{$card_margin_height});
-}
-
 .room_wrap {
-    width: 200px;
-    height: calc(#{$card_height} + #{$card_padding_height} + #{$card_margin_height});
+    height: $card_view_height;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -68,32 +66,36 @@ $circle_size: 180px;
 }
 
 .room_spacer {
-    height: calc(#{$card_height} + #{$card_padding_height} + #{$card_margin_height});
+    height: $card_view_height;
     border-right: dashed $spacer_size $spacer_color;
     position: relative;
 }
 
 .room_use_wrap {
+    width: $room_use_and_wait_contents_size;
     position: absolute;
     left: 20%;
 }
 
 .room_wait_wrap {
+    width: $room_use_and_wait_contents_size;
     position: absolute;
-    right: 25%;
+    right: 26%;
 }
 
 .room_limit_wrap {
+    width: $room_limit_contents_size;
     position: absolute;
     right: 0;
     top: 0;
+    border-left: $spacer_size solid $spacer_color;
 }
 
 #circle_svg {
     width: $circle_size;
     height: $circle_size;
     position: absolute;
-    left: -50px;
+    left: -80px;
 }
 
 .unlimit_color {
