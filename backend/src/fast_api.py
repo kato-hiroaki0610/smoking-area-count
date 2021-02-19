@@ -56,6 +56,7 @@ async def main() -> json:
     log.logger.debug(created_json)
 
     return {'room_status': created_json}
+    # return {'hello': 'world'}
 
 
 @app.get('/specified')
