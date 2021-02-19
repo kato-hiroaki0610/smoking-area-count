@@ -5,13 +5,17 @@
         {{room.room}}
       </div>
       <div class="vertical_line"></div>
-      <div class="room_info card_font">
-        利用者: {{room.use}}人
-        待機中: {{room.wait}}人
-        <div class="room_limit_wrap">
-          <div class="room_limit">定員上限</div>
-          <div class="room_limit_count">{{room.limit}}人</div>
-        </div>
+      <div class="room_wrap room_used_wrap card_font">
+        <div>利用者</div>
+        <div>{{room.use}}人</div>
+      </div>
+      <div class="room_wrap room_wait_wrap card_font">
+        <div>待機中</div>
+        <div>{{room.wait}}人</div>
+      </div>
+      <div class="room_wrap room_limit_wrap card_font">
+          <div>定員上限</div>
+          <div>{{room.limit}}人</div>
       </div>
       <svg id="circle_svg" alt="circle" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
         <g transform="translate(-141 -696)">
