@@ -1,7 +1,9 @@
+$card_width: 85vw;
 $card_height: 128px;
 $card_padding_height: 10px;
 $card_margin_height: 10px;
 $spacer_color: #0f477a;
+$spacer_size: 6px;
 $card_color: #3d87ce;
 $card_border_color: #609cd5;
 $user_limit_color: #c04a4a;
@@ -18,11 +20,11 @@ $circle_size: 180px;
 
 .card {
     border-radius: 4px;
-    border: 1px solid card_border_color;
+    border: 1px solid $card_border_color;
     color: white;
     background-color: $card_color;
     height: $card_height;
-    width: 85vw;
+    width: $card_width;
     margin: 10px 8px 30px;
     padding: $card_padding_height;
     display: flex;
@@ -45,7 +47,7 @@ $circle_size: 180px;
 }
 
 .vertical_line {
-    border-left: 6px solid $spacer_color;
+    border-left: $spacer_size solid $spacer_color;
     position: absolute;
     right: 200px;
     height: calc(#{$card_height} + #{$card_padding_height} + #{$card_margin_height});
@@ -65,14 +67,21 @@ $circle_size: 180px;
     padding: 20px;
 }
 
+.room_spacer {
+    height: calc(#{$card_height} + #{$card_padding_height} + #{$card_margin_height});
+    border-right: dashed $spacer_size $spacer_color;
+    position: relative;
+}
+
 .room_use_wrap {
-    border: dashed $spacer_color;
-    border-width: 0 6px 0 6px;
+    position: absolute;
+    left: 20%;
 }
 
 .room_wait_wrap {
-    border: dashed $spacer_color;
-    border-width: 0 6px 0 0;
+    // width: calc(50% - 200px);
+    position: absolute;
+    right: 25%;
 }
 
 .room_limit_wrap {
