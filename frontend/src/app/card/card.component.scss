@@ -2,12 +2,12 @@ $card_width: 85vw;
 $card_height: 128px;
 $card_padding_height: 10px;
 $card_margin_height: 10px;
-$spacer_color: #0f477a;
+$spacer_color: #90caf9;
 $spacer_size: 6px;
-$card_color: #3d87ce;
-$card_border_color: #609cd5;
-$user_limit_color: #c04a4a;
-$user_unlimit_color: #58db72;
+$card_color: #2196f3;
+$card_border_color: #64b5f6;
+$user_limit_color: #b00020;
+$user_unlimit_color: #00b020;
 $circle_size: 180px;
 .content {
     display: flex;
@@ -79,7 +79,6 @@ $circle_size: 180px;
 }
 
 .room_wait_wrap {
-    // width: calc(50% - 200px);
     position: absolute;
     right: 25%;
 }
