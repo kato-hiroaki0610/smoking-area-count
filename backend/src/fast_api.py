@@ -28,7 +28,7 @@ def read_toml() -> dict:
     """
     setting_file_name = os.path.join(os.path.dirname(__file__),
                                      SETTING_FILE_DIR, SETTING_FILE_NAME)
-    log.logger.info(setting_file_name)
+    log.logger.debug(setting_file_name)
 
     try:
         toml_reader = FileReaderForToml()
