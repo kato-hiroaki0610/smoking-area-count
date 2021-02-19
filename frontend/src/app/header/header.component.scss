@@ -3,19 +3,17 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
-    // background-color: #202120;
-    background-color: #3d87ce;
+    background-color: #2196f3;
     color: white;
     font-weight: 600;
-    // border-bottom: solid 5px #141414;
-    border-bottom: solid 5px #609cd5;
+    border-bottom: solid 5px #64b5f6;
 }
 
 div#title {
-    font-size: 20px;
+    font-size: 60px;
     margin-left: 10px;
     flex: 1;
 }

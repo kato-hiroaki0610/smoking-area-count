@@ -1,5 +1,5 @@
 $card_width: 85vw;
-$card_height: 200px;
+$card_height: 150px;
 $card_padding_height: 10px;
 $card_margin_height: 10px;
 $card_border_height: 1px;
@@ -14,13 +14,16 @@ $card_color: #2196f3;
 $card_border_color: #64b5f6;
 $user_limit_color: #b00020;
 $user_unlimit_color: #00b020;
-$circle_size: 250px;
+$circle_size: 200px;
 .content {
+    height: 100%;
+}
+
+.card_wrapper {
+    height: 100vh;
     display: flex;
-    margin: 82px auto 32px;
-    padding: 0 16px;
-    max-width: 960px;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
@@ -95,7 +98,7 @@ $circle_size: 250px;
     width: $circle_size;
     height: $circle_size;
     position: absolute;
-    left: -80px;
+    left: -50px;
 }
 
 .unlimit_color {
