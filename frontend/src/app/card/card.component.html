@@ -7,20 +7,20 @@
         </div>
         <div class="room_wrap room_use_wrap card_font">
           <div>利用者</div>
-          <div>{{room.use}}人</div>
+          <div [ngClass]="{'hidden' : room.use == ''}">{{room.use}}人</div>
         </div>
         <div class="room_spacer"></div>
         <div class="room_wrap room_wait_wrap card_font">
           <div>待機中</div>
-          <div>{{room.wait}}人</div>
+          <div [ngClass]="{'hidden' : room.wait == ''}">{{room.wait}}人</div>
         </div>
         <div class="room_wrap room_limit_wrap card_font">
             <div>定員上限</div>
-            <div>{{room.limit}}人</div>
+            <div [ngClass]="{'hidden' : room.limit == ''}">{{room.limit}}人</div>
         </div>
         <svg id="circle_svg" alt="circle" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
           <g transform="translate(-141 -696)">
-            <circle class="{{room.is_limit ? 'limit_color' : 'unlimit_color'}}" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)" />
+            <circle [ngClass]="room.is_limit ? 'limit_color' : 'unlimit_color'" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)" />
           </g>
         </svg>
       </div>
