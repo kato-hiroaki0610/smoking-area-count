@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Room } from './card/room-info';
 
@@ -19,7 +19,6 @@ export class RoomService {
 
   getRooms(): Observable<Room[]> {
     const rooms = this.http.get<Room[]>(this.host);
-    // const rooms = of(Rooms);
     return rooms;
   }
 }
