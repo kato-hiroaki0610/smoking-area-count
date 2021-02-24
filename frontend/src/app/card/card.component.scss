@@ -16,11 +16,14 @@ $limit_color: #b00020;
 $unlimit_color: #00b020;
 $circle_size: 200px;
 .content {
-    height: 100%;
+    height: 987px;
+    width: 100%;
+    position: absolute;
+    top: 90px;
+    overflow-y: scroll;
 }
 
 .card_wrapper {
-    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
