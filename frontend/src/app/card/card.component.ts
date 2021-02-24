@@ -10,6 +10,7 @@ import { Room, RoomStatus } from './room-info';
 
 export class CardComponent implements OnInit {
   roomStatus: RoomStatus[];
+  isLimit: boolean;
 
   constructor(private roomService: RoomService) { }
 

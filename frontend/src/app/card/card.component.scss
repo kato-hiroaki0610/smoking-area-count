@@ -12,8 +12,8 @@ $spacer_color: #90caf9;
 $spacer_size: 6px;
 $card_color: #2196f3;
 $card_border_color: #64b5f6;
-$user_limit_color: #b00020;
-$user_unlimit_color: #00b020;
+$limit_color: #b00020;
+$unlimit_color: #00b020;
 $circle_size: 200px;
 .content {
     height: 100%;
@@ -102,9 +102,9 @@ $circle_size: 200px;
 }
 
 .unlimit_color {
-    fill: $user_limit_color;
+    fill: $unlimit_color;
 }
 
 .limit_color {
-    fill: $user_unlimit_color;
+    fill: $limit_color;
 }
