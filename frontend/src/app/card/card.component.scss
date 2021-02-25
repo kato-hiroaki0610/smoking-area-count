@@ -17,18 +17,26 @@ $unlimit_color: #00b020;
 $circle_size: 250px;
 $circle_left: -70px;
 .content {
-    height: 884px;
+    height: calc(100% - 85px);
     width: 100%;
-    position: absolute;
-    top: 85px;
+    // display: flex;
+    // flex-flow: wrap column;
+    // flex-wrap: no-wrap;
+    // overflow-y: scroll;
 }
 
 .card_wrapper {
-    height: 100%;
+    position: absolute;
+    top: 85px;
+    height: calc(100% - 85px);
+    width: 100%;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: scroll;
+    align-content: center;
+    justify-content: center;
+    // flex-wrap: wrap;
 }
 
 .card {
@@ -38,7 +46,7 @@ $circle_left: -70px;
     background-color: $card_color;
     height: $card_height;
     width: $card_width;
-    margin: 25px 8px 20px calc(#{$circle_left} * -1);
+    margin: 1px 0;
     padding: $card_padding_height;
     display: flex;
     flex-direction: row;
@@ -54,12 +62,6 @@ $circle_left: -70px;
     letter-spacing: 3px;
 }
 
-.card .room {
-    position: absolute;
-    left: 0;
-    z-index: 1;
-}
-
 .room_wrap {
     height: $card_view_height;
     display: flex;
@@ -71,6 +73,14 @@ $circle_left: -70px;
 .room_wrap div {
     height: 30px;
     padding: 20px;
+}
+
+.room {
+    height: calc(#{$card_height} + (#{$card_padding_height} * 2));
+    width: 220px;
+    position: absolute;
+    left: -1px;
+    border-radius: 4px 0 0 4px;
 }
 
 .room_spacer {
@@ -99,19 +109,14 @@ $circle_left: -70px;
     border-left: $spacer_size solid $spacer_color;
 }
 
-#circle_svg {
-    width: $circle_size;
-    height: $circle_size;
-    position: absolute;
-    left: $circle_left;
-}
-
 .unlimit_color {
-    fill: $unlimit_color;
+    // fill: $unlimit_color;
+    background-color: $unlimit_color;
 }
 
 .limit_color {
-    fill: $limit_color;
+    // fill: $limit_color;
+    background-color: $limit_color;
 }
 
 .hidden {

@@ -2,8 +2,8 @@
   <div class="card_wrapper">
     <ng-container *ngFor="let room of roomStatus">
       <div class="card">
-        <div class="room card_font">
-          {{room.room}}
+        <div class="room_wrap room card_font" [ngClass]="room.is_limit ? 'limit_color' : 'unlimit_color'">
+          <div>{{room.room}}</div>
         </div>
         <div class="room_wrap room_use_wrap card_font">
           <div>利用者</div>
@@ -18,11 +18,6 @@
             <div>定員上限</div>
             <div [ngClass]="{'hidden' : room.limit == ''}">{{room.limit}}人</div>
         </div>
-        <svg id="circle_svg" alt="circle" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
-          <g transform="translate(-141 -696)">
-            <circle [ngClass]="room.is_limit ? 'limit_color' : 'unlimit_color'" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)" />
-          </g>
-        </svg>
       </div>
     </ng-container>
   </div>
