@@ -1,4 +1,4 @@
-$card_width: 94vw;
+$card_width: 98vw;
 $card_height: 200px;
 $card_padding_height: 5px;
 $card_margin_height: 10px;
@@ -19,24 +19,12 @@ $circle_left: -70px;
 .content {
     height: calc(100% - 85px);
     width: 100%;
-    // display: flex;
-    // flex-flow: wrap column;
-    // flex-wrap: no-wrap;
-    // overflow-y: scroll;
-}
-
-.card_wrapper {
-    position: absolute;
+    position: relative;
     top: 85px;
-    height: calc(100% - 85px);
-    width: 100%;
-    overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    // flex-wrap: wrap;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .card {
@@ -46,7 +34,7 @@ $circle_left: -70px;
     background-color: $card_color;
     height: $card_height;
     width: $card_width;
-    margin: 1px 0;
+    margin: 5px;
     padding: $card_padding_height;
     display: flex;
     flex-direction: row;
