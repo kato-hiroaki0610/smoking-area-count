@@ -56,7 +56,6 @@ async def main() -> json:
     log.logger.debug(created_json)
 
     return {'room_status': created_json}
-    # return {'hello': 'world'}
 
 
 @app.get('/specified')
@@ -96,7 +95,7 @@ async def specified_room(room: str) -> json:
 
     # return {'specified_room_status': created_json}
     return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={'specified_room_status': created_json})
+                        content={'room_status': created_json})
 
 
 @app.get('/multiple')
@@ -137,4 +136,4 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
     log.logger.debug(created_json)
 
     return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={'multiple_room_status': created_json})
+                        content={'room_status': created_json})
