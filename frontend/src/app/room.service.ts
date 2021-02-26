@@ -17,9 +17,16 @@ export class RoomService {
   private specifiedHost = 'http://localhost:4200/app/specified?room=';
   private multipleHost = 'http://localhost:4200/app/multiple?room=';
 
+  private state;
+
   constructor(private http: HttpClient) { }
 
-  getRooms(): Observable<Room[]> {
+  getRooms(currentPath): Observable<Room[]> {
+    const rooms = this.http.get<Room[]>(this.host);
+    return rooms;
+  }
+
+  getAllRooms(currentPath): Observable<Room[]> {
     const rooms = this.http.get<Room[]>(this.host);
     return rooms;
   }
