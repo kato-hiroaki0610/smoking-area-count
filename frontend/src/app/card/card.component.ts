@@ -21,19 +21,21 @@ export class CardComponent implements OnInit {
   constructor(private roomService: RoomService, private router: Router) { }
 
   ngOnInit(): void {
-      this.router.events.pipe(
-        filter(f => f instanceof NavigationEnd)
-      ).subscribe((s: any) => {
-          this.currentPath = s.url;
-      });
-
+      this.getUrl();
       this.getRooms();
+  }
+
+  getUrl(): void {
+    this.router.events.pipe(
+      filter(f => f instanceof NavigationEnd)
+    ).subscribe((s: any) => {
+        this.currentPath = s.url;
+    });
   }
 
   getRooms(): void {
     const intervalTime = 3000;
-    const apiGetTimer = timer(0, intervalTime);
-    apiGetTimer.subscribe(() => {
+    timer(0, intervalTime).subscribe(() => {
       this.roomService.getRooms(this.currentPath)
       .subscribe(rooms => {
         const room: Room[] = rooms;
