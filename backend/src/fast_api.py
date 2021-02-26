@@ -99,7 +99,7 @@ async def specified_room(room: str) -> json:
 
 
 @app.get('/multiple')
-async def multiple_room(rooms: List[str] = Query(Required)) -> json:
+async def multiple_room(room: List[str] = Query(Required)) -> json:
     """指定した複数の部屋の情報を取得する
 
     Args:
@@ -117,9 +117,9 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
 
     target_room['area'] = []
 
-    for room in rooms:
+    for current_room in room:
         for area in setting['area']:
-            if area['場所'] == room:
+            if area['場所'] == current_room:
                 target_room['area'].append(area)
                 break
 

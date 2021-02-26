@@ -33,7 +33,8 @@ export class RoomService {
       const parameter = query[1];
       return this.getSpecifiedRoom(parameter);
     } else if (query[0] === '/multiple') {
-
+      const parameter = query[1];
+      return this.getMultipleRoom(parameter);
     } else {
       return this.getAllRooms();
     }
@@ -53,8 +54,8 @@ export class RoomService {
     return room;
   }
 
-  getMultipleRoom(): Observable<Room[]> {
-    const rooms = this.http.get<Room[]>(this.multipleHost);
+  getMultipleRoom(query: string): Observable<Room[]> {
+    const rooms = this.http.get<Room[]>(this.multipleHost + query);
     return rooms;
   }
 }
