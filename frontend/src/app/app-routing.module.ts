@@ -5,8 +5,8 @@ import { AppComponent } from './app.component';
 
 const routes: Routes = [
   { path: '', component: AppComponent },
-  { path: 'specified/:room', component: AppComponent },
-  { path: 'multiple/:room', component: AppComponent },
+  { path: 'specified', component: AppComponent },
+  { path: 'multiple', component: AppComponent },
 ];
 
 @NgModule({
