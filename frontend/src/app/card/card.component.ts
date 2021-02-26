@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { interval } from 'rxjs';
+import { timer } from 'rxjs';
 
 import { RoomService } from '../room.service';
 import { Room, RoomStatus } from './room-info';
@@ -22,9 +22,9 @@ export class CardComponent implements OnInit {
   }
 
   getRooms(): void {
-    const intervalTime = 1000;
-    const timer = interval(intervalTime);
-    timer.subscribe(() => {
+    const intervalTime = 3000;
+    const apiGetTimer = timer(0, intervalTime);
+    apiGetTimer.subscribe(() => {
       this.roomService.getRooms()
       .subscribe(rooms => {
         const room: Room[] = rooms;
@@ -33,7 +33,6 @@ export class CardComponent implements OnInit {
         // no-string-literalをdisableにする
         // tslint:disable-next-line:no-string-literal
         this.roomStatus = room['room_status'];
-        console.log(this.roomStatus);
       },
       error => {
         console.error(error.status + ':' + error.statusText);
