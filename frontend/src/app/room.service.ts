@@ -14,13 +14,23 @@ export class RoomService {
   // それを回避するためフロントエンドのポート番号「4200」を指定し
   // Angular CLIのリバースプロキシを利用してバックエンドとの通信を実現する
   private host = 'http://localhost:4200/app';
-  // private host = 'http://localhost:4200/app/specified?room=';
-  // private host = 'http://localhost:4200/app/multiple?room=';
+  private specifiedHost = 'http://localhost:4200/app/specified?room=';
+  private multipleHost = 'http://localhost:4200/app/multiple?room=';
 
   constructor(private http: HttpClient) { }
 
   getRooms(): Observable<Room[]> {
     const rooms = this.http.get<Room[]>(this.host);
+    return rooms;
+  }
+
+  getSpecifiedRoom(): Observable<Room[]> {
+    const room = this.http.get<Room[]>(this.specifiedHost);
+    return room;
+  }
+
+  getMultipleRoom(): Observable<Room[]> {
+    const rooms = this.http.get<Room[]>(this.multipleHost);
     return rooms;
   }
 }
