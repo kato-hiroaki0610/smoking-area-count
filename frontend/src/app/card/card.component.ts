@@ -34,7 +34,7 @@ export class CardComponent implements OnInit {
   }
 
   getRooms(): void {
-    const intervalTime = 3000;
+    const intervalTime = 2000;
     timer(0, intervalTime).subscribe(() => {
       this.roomService.getRooms(this.currentPath)
       .subscribe(rooms => {
