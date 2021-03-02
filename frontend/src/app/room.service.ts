@@ -14,10 +14,8 @@ export class RoomService {
   // それを回避するためフロントエンドのポート番号「4200」を指定し
   // Angular CLIのリバースプロキシを利用してバックエンドとの通信を実現する
   private host = 'http://localhost:4200/app';
-  private specifiedHost = 'http://localhost:4200/app/specified?';
-  private multipleHost = 'http://localhost:4200/app/multiple?';
-
-  private state;
+  private specifiedHost = this.host + '/specified?';
+  private multipleHost = this.host + '/multiple?';
 
   constructor(private http: HttpClient) { }
 
@@ -26,36 +24,21 @@ export class RoomService {
 
     // APIとqueryを分割する
     const query = currentPath.split('?');
-
+    let url: string;
     if (query[0] === '/') {
-      return this.getAllRooms();
+      url = this.host;
     } else if (query[0] === '/specified') {
-      const parameter = query[1];
-      return this.getSpecifiedRoom(parameter);
+      url = this.specifiedHost + query[1];
     } else if (query[0] === '/multiple') {
-      const parameter = query[1];
-      return this.getMultipleRoom(parameter);
+      url = this.multipleHost + query[1];
     } else {
-      return this.getAllRooms();
     }
 
-    console.log(query);
-    const rooms = this.http.get<Room[]>(this.host);
-    return rooms;
+    return this.callAPI(url);
   }
 
-  getAllRooms(): Observable<Room[]> {
-    const rooms = this.http.get<Room[]>(this.host);
-    return rooms;
-  }
-
-  getSpecifiedRoom(query: string): Observable<Room[]> {
-    const room = this.http.get<Room[]>(this.specifiedHost + query);
-    return room;
-  }
-
-  getMultipleRoom(query: string): Observable<Room[]> {
-    const rooms = this.http.get<Room[]>(this.multipleHost + query);
+  callAPI(url: string): Observable<Room[]> {
+    const rooms = this.http.get<Room[]>(url);
     return rooms;
   }
 }
