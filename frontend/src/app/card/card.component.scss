@@ -5,9 +5,9 @@ $card_margin_height: 10px;
 $card_border_height: 1px;
 $card_font_size: 4vw;
 $room_contents_width: 13vw;
-$room_use_contents_width: 37vw;
-$room_wait_contents_width: 28vw;
-$room_limit_contents_width: 22vw;
+$room_use_contents_width: 30vw;
+$room_wait_contents_width: 30vw;
+$room_limit_contents_width: 25vw;
 // 実際に画面に表示されるカードの高さ paddingやborderの高さも含めた値
 $card_view_height: calc(#{$card_height} + (#{$card_padding_height} * 2) + (#{$card_border_height} * 2));
 $spacer_color: #90caf9;
@@ -84,7 +84,8 @@ $unlimit_color: #00b020;
 .room_spacer {
     height: $card_view_height;
     border-right: dashed $spacer_size $spacer_color;
-    position: relative;
+    position: absolute;
+    left: calc(#{$room_contents_width} + #{$room_use_contents_width});
 }
 
 .room_use_wrap {
@@ -92,14 +93,14 @@ $unlimit_color: #00b020;
     height: 5vh;
     max-width: 700px;
     position: absolute;
-    left: 13vw;
+    left: $room_contents_width;
 }
 
 .room_wait_wrap {
     width: $room_wait_contents_width;
     max-width: 560px;
     position: absolute;
-    left: 49vw;
+    left: calc(#{$room_contents_width} + #{$room_use_contents_width} + #{$spacer_size});
 }
 
 .room_limit_wrap {
