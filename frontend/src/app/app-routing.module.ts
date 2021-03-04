@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: '', component: AppComponent },
   { path: 'specified', component: AppComponent },
   { path: 'multiple', component: AppComponent },
+  { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
 
 @NgModule({

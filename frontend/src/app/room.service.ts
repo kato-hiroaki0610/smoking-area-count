@@ -32,6 +32,7 @@ export class RoomService {
     } else if (query[0] === '/multiple') {
       url = this.multipleHost + query[1];
     } else {
+      url = this.host;
     }
 
     return this.callAPI(url);
