@@ -31,13 +31,14 @@ export class CardComponent implements OnInit {
     ).subscribe((s: any) => {
         this.currentPath = s.url;
     });
+
   }
 
   getRooms(): void {
     const intervalTime = 2000;
     timer(0, intervalTime).subscribe(() => {
       this.roomService.getRooms(this.currentPath)
-      .subscribe(rooms => {
+      .subscribe((rooms: Room[]) => {
         const room: Room[] = rooms;
         // 文字列でアクセスしたら、エラーが表示される。
         // ピリオドでアクセスしたら動かないためtslintで
