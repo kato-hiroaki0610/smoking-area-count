@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  title = '喫煙室利用者数カウント';
+  private _title = '喫煙室利用者数カウント';
+  public get title(): string {
+    return this._title;
+  }
 
   constructor() { }
 
