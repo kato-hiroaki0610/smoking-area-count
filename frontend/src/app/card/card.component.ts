@@ -40,8 +40,8 @@ export class CardComponent implements OnInit {
       this.roomService.getRooms(this.currentPath)
       .subscribe((rooms: Room[]) => {
         const room: Room[] = rooms;
-        // 文字列でアクセスしたら、エラーが表示される。
-        // ピリオドでアクセスしたら動かないためtslintで
+        // 文字列でアクセスしたら、Lintで警告されるが、
+        // ピリオドでアクセスしたらエラーで動かないためTsLintの
         // no-string-literalをdisableにする
         // tslint:disable-next-line:no-string-literal
         this.roomStatus = room['room_status'];
