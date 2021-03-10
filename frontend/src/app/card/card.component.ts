@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-
 import { timer } from 'rxjs';
 
 import { RoomService } from '../room.service';
@@ -31,7 +30,6 @@ export class CardComponent implements OnInit {
     ).subscribe((s: any) => {
         this.currentPath = s.url;
     });
-
   }
 
   getRooms(): void {
