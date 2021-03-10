@@ -10,12 +10,13 @@
           <div *ngIf="room.use != ''">{{room.use}}人</div>
           <div *ngIf="room.use == ''">0人</div>
         </div>
-        <div class="room_spacer"></div>
+        <div class="room_spacer spacer_dashed"></div>
         <div class="room_wrap room_wait_wrap card_font">
           <div>待機中</div>
           <div *ngIf="room.wait != ''">{{room.wait}}人</div>
           <div *ngIf="room.wait == ''">0人</div>
         </div>
+        <div class="room_spacer spacer_solid"></div>
         <div class="room_wrap room_limit_wrap card_font">
             <div>定員上限</div>
             <div *ngIf="room.limit != ''">{{room.limit}}人</div>

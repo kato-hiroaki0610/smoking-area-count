@@ -83,9 +83,17 @@ $unlimit_color: #00b020;
 
 .room_spacer {
     height: $card_view_height;
-    border-right: dashed $spacer_size $spacer_color;
     position: absolute;
-    left: calc(#{$room_contents_width} + #{$room_use_contents_width});
+}
+
+.spacer_dashed {
+  border-right: dashed $spacer_size $spacer_color;
+  left: calc(#{$room_contents_width} + #{$room_use_contents_width});
+}
+
+.spacer_solid {
+  border-right: solid $spacer_size $spacer_color;
+  left: calc(#{$room_contents_width} + #{$spacer_size} + #{$room_use_contents_width} + #{$room_wait_contents_width});
 }
 
 .room_use_wrap {
@@ -109,7 +117,6 @@ $unlimit_color: #00b020;
     position: absolute;
     right: 0;
     top: 0;
-    border-left: $spacer_size solid $spacer_color;
 }
 
 .unlimit_color {
