@@ -127,10 +127,6 @@ $unlimit_color: #00b020;
     background-color: $limit_color;
 }
 
-.hidden {
-    visibility: hidden;
-}
-
 .blinking {
     -webkit-animation: blink 1s ease-in-out infinite alternate;
     -moz-animation: blink 1s ease-in-out infinite alternate;
