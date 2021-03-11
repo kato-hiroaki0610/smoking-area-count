@@ -88,27 +88,29 @@ class CreateJson:
         for setting_area in self._setting['area']:
             tmp_json = {}
             current_area = setting_area['場所']
-            tmp_json['階数'] = current_area
+            tmp_json['room'] = current_area
 
             # 利用者の最終行を取得する
             last_user_row = self.get_last_row(setting_area['利用者'])
             if last_user_row is not None:
                 user_detect_num = self.get_detect_column(last_user_row)
-                tmp_json['利用者数'] = user_detect_num
-                tmp_json['上限超え'] = self.is_capacity_over(
+                tmp_json['use'] = user_detect_num
+                tmp_json['is_limit'] = self.is_capacity_over(
                     setting_area, user_detect_num)
             else:
-                tmp_json['利用者数'] = ''
-                tmp_json['上限超え'] = ''
+                tmp_json['use'] = ''
+                tmp_json['is_limit'] = ''
 
             # 待ち人数の最終行を取得する
             last_wait_user_row = self.get_last_row(setting_area['待ち人数'])
             if last_wait_user_row is not None:
                 wait_user_detect_num = self.get_detect_column(
                     last_wait_user_row)
-                tmp_json['待ち人数'] = wait_user_detect_num
+                tmp_json['wait'] = wait_user_detect_num
             else:
-                tmp_json['待ち人数'] = ''
+                tmp_json['wait'] = ''
+
+            tmp_json['limit'] = setting_area['定員上限']
 
             json_dict.append(tmp_json)
 

@@ -28,7 +28,7 @@ def read_toml() -> dict:
     """
     setting_file_name = os.path.join(os.path.dirname(__file__),
                                      SETTING_FILE_DIR, SETTING_FILE_NAME)
-    log.logger.info(setting_file_name)
+    log.logger.debug(setting_file_name)
 
     try:
         toml_reader = FileReaderForToml()
@@ -95,11 +95,11 @@ async def specified_room(room: str) -> json:
 
     # return {'specified_room_status': created_json}
     return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={'specified_room_status': created_json})
+                        content={'room_status': created_json})
 
 
 @app.get('/multiple')
-async def multiple_room(rooms: List[str] = Query(Required)) -> json:
+async def multiple_room(room: List[str] = Query(Required)) -> json:
     """指定した複数の部屋の情報を取得する
 
     Args:
@@ -117,9 +117,9 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
 
     target_room['area'] = []
 
-    for room in rooms:
+    for current_room in room:
         for area in setting['area']:
-            if area['場所'] == room:
+            if area['場所'] == current_room:
                 target_room['area'].append(area)
                 break
 
@@ -136,4 +136,4 @@ async def multiple_room(rooms: List[str] = Query(Required)) -> json:
     log.logger.debug(created_json)
 
     return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={'multiple_room_status': created_json})
+                        content={'room_status': created_json})

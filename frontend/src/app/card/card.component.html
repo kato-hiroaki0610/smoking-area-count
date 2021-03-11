@@ -1,0 +1,28 @@
+<div class="content" role="main">
+  <div class="card_wrapper">
+    <ng-container *ngFor="let room of roomStatus">
+      <div class="card" [ngClass]="room.is_limit ? 'blinking' : ''">
+        <div class="room_wrap room card_font" [ngClass]="room.is_limit ? 'limit_color' : 'unlimit_color'">
+          <div>{{room.room}}</div>
+        </div>
+        <div class="room_wrap room_use_wrap card_font">
+          <div>利用者</div>
+          <div *ngIf="room.use != ''">{{room.use}}人</div>
+          <div *ngIf="room.use == ''">0人</div>
+        </div>
+        <div class="room_spacer spacer_dashed"></div>
+        <div class="room_wrap room_wait_wrap card_font">
+          <div>待機中</div>
+          <div *ngIf="room.wait != ''">{{room.wait}}人</div>
+          <div *ngIf="room.wait == ''">0人</div>
+        </div>
+        <div class="room_spacer spacer_solid"></div>
+        <div class="room_wrap room_limit_wrap card_font">
+          <div>定員上限</div>
+          <div *ngIf="room.limit != ''">{{room.limit}}人</div>
+          <div *ngIf="room.limit == ''">0人</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
