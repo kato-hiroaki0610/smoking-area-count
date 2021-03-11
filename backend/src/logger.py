@@ -24,7 +24,7 @@ class Log:
         timestamp = datetime.today().strftime('%Y%m%d_%H%M%S')
         log_filename = os.path.join(log_directory, timestamp + '.log')
 
-        file_handler = logging.FileHandler(log_filename, 'a')
+        file_handler = logging.FileHandler(log_filename, 'a', encoding='utf-8')
         # handlerのログレベル設定(ハンドラが出力するエラーメッセージのレベル)
         file_handler.setLevel(logging.DEBUG)
 
