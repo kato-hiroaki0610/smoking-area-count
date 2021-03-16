@@ -1,7 +1,8 @@
 import json
-import os
+import pathlib
 from typing import List
 
+import uvicorn
 from fastapi import FastAPI, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.params import Query
@@ -26,8 +27,8 @@ def read_toml() -> dict:
     Returns:
         dict: 読み込んだ設定ファイル
     """
-    setting_file_name = os.path.join(os.path.dirname(__file__),
-                                     SETTING_FILE_DIR, SETTING_FILE_NAME)
+    p_dir = pathlib.Path('.')
+    setting_file_name = p_dir / SETTING_FILE_DIR / SETTING_FILE_NAME
     log.logger.debug(setting_file_name)
 
     try:
@@ -137,3 +138,7 @@ async def multiple_room(room: List[str] = Query(Required)) -> json:
 
     return JSONResponse(status_code=status.HTTP_200_OK,
                         content={'room_status': created_json})
+
+
+if __name__ == '__main__':
+    uvicorn.run('fast_api:app', reload=False)
