@@ -5,8 +5,9 @@ detect_field_num = 4
 # 喫煙室の場所
 '場所' = '5階'
 # 利用者、待ち人数のlogファイルの場所を「絶対パス」で記載、なければ空文字列とする
-'利用者' = 'E:\project\smoking-area-count\backend\src\test_file\video_source.csv'
-'待ち人数' = 'E:\project\smoking-area-count\backend\src\test_file\video_source_1.csv'
+# ex: '利用者' = 'E:\path\to\video_source.csv'
+'利用者' = ''
+'待ち人数' = ''
 # 定員上限を記載
 '定員上限' = 7
 
@@ -14,7 +15,7 @@ detect_field_num = 4
 # 喫煙室の場所
 '場所' = '9階'
 # 利用者、待ち人数のlogファイルの場所を「絶対パス」で記載、なければ空文字列とする
-'利用者' = 'E:\project\smoking-area-count\backend\src\test_file\video_source_1.csv'
+'利用者' = ''
 '待ち人数' = ''
 # 定員上限を記載
 '定員上限' = 7
@@ -23,7 +24,7 @@ detect_field_num = 4
 # 喫煙室の場所
 '場所' = '11階'
 # 利用者、待ち人数のlogファイルの場所を「絶対パス」で記載、なければ空文字列とする
-'利用者' = 'E:\project\smoking-area-count\backend\src\test_file\video_source_2.csv'
-'待ち人数' = 'E:\project\smoking-area-count\backend\src\test_file\video_source_2.csv'
+'利用者' = ''
+'待ち人数' = ''
 # 定員上限を記載
 '定員上限' = 5
