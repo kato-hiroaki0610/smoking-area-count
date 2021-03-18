@@ -1,3 +1,2 @@
-build
-dist
-setting
+release/build
+release/dist/log
