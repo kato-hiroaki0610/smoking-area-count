@@ -8,6 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.params import Query
 from pydantic.fields import Required
 from starlette.responses import JSONResponse
+from starlette.staticfiles import StaticFiles
 
 from create_json import CreateJson
 from file_reader_for_toml import FileReaderForToml
@@ -17,6 +18,8 @@ SETTING_FILE_DIR = 'setting'
 SETTING_FILE_NAME = 'setting.toml'
 
 app = FastAPI()
+app.mount('/', StaticFiles(directory='/'), name='/')
+
 log = Log()
 log.set_logger()
 
