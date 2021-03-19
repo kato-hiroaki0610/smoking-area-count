@@ -18,7 +18,10 @@ SETTING_FILE_DIR = 'setting'
 SETTING_FILE_NAME = 'setting.toml'
 
 app = FastAPI()
-app.mount('/', StaticFiles(directory='/'), name='/')
+
+app.mount('/web',
+          StaticFiles(directory='./web'),
+          name='web')
 
 log = Log()
 log.set_logger()
