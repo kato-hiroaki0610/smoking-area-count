@@ -3,7 +3,7 @@
 block_cipher = None
 
 added_files = [
-   ('.\\..\\..\\frontend\\dist\\smoking-area-count\\index.html', '.\\web\\index.html')
+   ('../frontend/dist/smoking-area-count/', 'web')
 ]
 
 paths = [
