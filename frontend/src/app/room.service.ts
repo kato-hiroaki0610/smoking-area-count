@@ -23,16 +23,15 @@ export class RoomService {
   constructor(private http: HttpClient) { }
 
   getRooms(currentPath: string): Observable<Room[]> {
-    console.log(currentPath);
-
     // APIとqueryを分割する
     const query = currentPath.split('?');
+    console.log(query);
     let url: string;
-    if (query[0] === '/') {
+    if (query[0] === '/web') {
       url = this.host;
-    } else if (query[0] === '/specified') {
+    } else if (query[0] === '/web/specified') {
       url = this.specifiedHost + query[1];
-    } else if (query[0] === '/multiple') {
+    } else if (query[0] === '/web/multiple') {
       url = this.multipleHost + query[1];
     } else {
       url = this.host;
