@@ -5,8 +5,8 @@ import { AppComponent } from './app.component';
 
 const routes: Routes = [
   { path: '', component: AppComponent },
-  { path: 'specified', component: AppComponent },
-  { path: 'multiple', component: AppComponent },
+  { path: 'web/specified', component: AppComponent },
+  { path: 'web/multiple', component: AppComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
