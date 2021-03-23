@@ -112,7 +112,6 @@ async def specified_room(room: str) -> json:
 
     log.logger.debug(created_json)
 
-    # return {'specified_room_status': created_json}
     return JSONResponse(status_code=status.HTTP_200_OK,
                         content={'room_status': created_json})
 
