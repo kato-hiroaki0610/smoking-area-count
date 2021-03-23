@@ -28,10 +28,9 @@ export class RoomService {
     // APIとqueryを分割する
     const query = currentPath.split('?');
     let url: string;
-    console.log(query);
-    if (query[0] === '/web/index.html') {
+    if (query[0] === '/') {
       url = this.host;
-    } else if (query[0] === '/web/specified') {
+    } else if (query[0] === '/specified') {
       url = this.specifiedHost + query[1];
     } else if (query[0] === '/multiple') {
       url = this.multipleHost + query[1];

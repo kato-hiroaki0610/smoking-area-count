@@ -1,6 +1,7 @@
+import { AppComponent } from './../app.component';
 import { Component, OnInit } from '@angular/core';
-
 import { NavigationEnd, Router } from '@angular/router';
+
 import { filter } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
@@ -43,6 +44,9 @@ export class CardComponent implements OnInit {
         // no-string-literalをdisableにする
         // tslint:disable-next-line:no-string-literal
         this.roomStatus = room['room_status'];
+        console.log('navigate');
+        this.router.navigateByUrl('http://localhost:8000/web/index.html');
+        console.log('navigated');
       },
       error => {
         console.error(error.status + ':' + error.statusText);
