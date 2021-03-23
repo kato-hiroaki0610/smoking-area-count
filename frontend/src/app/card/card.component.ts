@@ -44,9 +44,6 @@ export class CardComponent implements OnInit {
         // no-string-literalをdisableにする
         // tslint:disable-next-line:no-string-literal
         this.roomStatus = room['room_status'];
-        console.log('navigate');
-        this.router.navigateByUrl('http://localhost:8000/web/index.html');
-        console.log('navigated');
       },
       error => {
         console.error(error.status + ':' + error.statusText);
