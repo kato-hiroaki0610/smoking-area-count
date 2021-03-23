@@ -3,49 +3,46 @@
 block_cipher = None
 
 added_files = [
-   ('../../frontend/dist/smoking-area-count/', './template')
+   ('./web/', 'web')
 ]
 
 paths = [
    'E:\\project\\smoking-area-count\\backend\\src'
 ]
 
-hidden_imports = [
-    'uvicorn.logging',
-
-    # LOOP_SETUPS
-    'uvicorn.loops',
-    'uvicorn.loops.auto',
-    'uvicorn.loops.asyncio',
-    'uvicorn.loops.uvloop',
-
-    # HTTP_PROTOCOLS
-    'uvicorn.protocols',
-    'uvicorn.protocols.http',
-    'uvicorn.protocols.http.auto',
-    'uvicorn.protocols.http.h11_impl',
-    'uvicorn.protocols.http.httptools_impl',
-
-    # WS_PROTOCOLS
-    'uvicorn.protocols.websockets',
-    'uvicorn.protocols.websockets.auto',
-    'uvicorn.protocols.websockets.websockets_impl',
-    'uvicorn.protocols.websockets.wsproto_impl',
-
-    # LIFESPAN
-    'uvicorn.lifespan',
-    'uvicorn.lifespan.on',
-    'uvicorn.lifespan.off',
-
-    'fast_api',
-]
-
 a = Analysis(['fast_api.py'],
              pathex=paths,
              binaries=[],
              datas=added_files,
-             hiddenimports=hidden_imports,
-             hookspath=[],
+             hiddenimports=[
+                'uvicorn.logging',
+
+                # LOOP_SETUPS
+                'uvicorn.loops',
+                'uvicorn.loops.auto',
+                'uvicorn.loops.asyncio',
+                'uvicorn.loops.uvloop',
+
+                # HTTP_PROTOCOLS
+                'uvicorn.protocols',
+                'uvicorn.protocols.http',
+                'uvicorn.protocols.http.auto',
+                'uvicorn.protocols.http.h11_impl',
+                'uvicorn.protocols.http.httptools_impl',
+
+                # WS_PROTOCOLS
+                'uvicorn.protocols.websockets',
+                'uvicorn.protocols.websockets.auto',
+                'uvicorn.protocols.websockets.websockets_impl',
+                'uvicorn.protocols.websockets.wsproto_impl',
+
+                # LIFESPAN
+                'uvicorn.lifespan',
+                'uvicorn.lifespan.on',
+                'uvicorn.lifespan.off',
+
+                'fast_api',
+             ],
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
