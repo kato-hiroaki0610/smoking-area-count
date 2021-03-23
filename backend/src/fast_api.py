@@ -7,6 +7,7 @@ from fastapi import FastAPI, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.params import Query
 from pydantic.fields import Required
+from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
 
@@ -19,8 +20,19 @@ SETTING_FILE_NAME = 'setting.toml'
 
 app = FastAPI()
 
+# CORS対策
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*']
+)
+
+# ./webディレクトリ以下のファイルを静的ファイルとして指定
+# html=Trueを指定することにより、/webににアクセスすることでindex.htmlに自動的にアクセスするようにする
 app.mount('/web',
-          StaticFiles(directory='./web'),
+          StaticFiles(directory='./web', html=True),
           name='web')
 
 log = Log()
