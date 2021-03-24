@@ -24,7 +24,7 @@ export class RoomService {
 
   getRooms(currentPath: string): Observable<Room[]> {
     // APIとqueryを分割する
-    const query = currentPath.split('?');
+    const query = currentPath ? currentPath.split('?') : '';
     console.log(query);
     let url: string;
     if (query[0] === '/web') {
