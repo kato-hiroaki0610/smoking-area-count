@@ -14,9 +14,9 @@ export class RoomService {
   // Angular CLIのリバースプロキシを利用してバックエンドとの通信を実現する
   // private host = 'http://localhost:4200/app';
   // buildしてhtmlを配置するだけならば、localhostで問題ない
-  private host = 'http://localhost:8000';
-  private specifiedHost = this.host + '/specified?room=';
-  private multipleHost = this.host + '/multiple?room=';
+  private readonly host = 'http://localhost:8000';
+  private readonly specifiedHost = this.host + '/specified?room=';
+  private readonly multipleHost = this.host + '/multiple?room=';
 
   constructor(private http: HttpClient) { }
 
