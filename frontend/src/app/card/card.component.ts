@@ -19,13 +19,13 @@ export class CardComponent implements OnInit {
   private readonly apis: string[] = ['', 'specified', 'multiple'];
   private readonly rooms: string[] = ['5階', '7階', '11階'];
 
-  private readonly currentAPI: number = 0;
-  private readonly currentRoom: number = 0;
+  private readonly currentAPI: number = 1;
+  private readonly currentRoom: number = 1;
 
   constructor(private roomService: RoomService, private router: Router) { }
 
   ngOnInit(): void {
-      this.getRooms(this.getAPI(), this.getRoom());
+      this.getRooms();
   }
 
   getAPI(): string {
@@ -39,9 +39,11 @@ export class CardComponent implements OnInit {
     return room;
   }
 
-  getRooms(api: string, room: string): void {
+  getRooms(): void {
     const intervalTime = 2000;
     timer(0, intervalTime).subscribe(() => {
+      const api: string = this.getAPI();
+      const room: string = this.getRoom();
       this.roomService.getRooms(api, room)
       .subscribe((rooms: Room[]) => {
         const room: Room[] = rooms;
