@@ -1,8 +1,6 @@
-import { AppComponent } from './../app.component';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
-import { filter } from 'rxjs/operators';
 import { timer } from 'rxjs';
 
 import { RoomService } from '../room.service';
@@ -16,7 +14,6 @@ import { Room, RoomStatus } from './room-info';
 
 export class CardComponent implements OnInit {
   public roomStatus: RoomStatus[];
-  // private currentPath: string;
 
   // FIXME: いずれConfigファイルからよむような感じにしたい
   private apis: string[] = ['', 'specified', 'multiple'];
@@ -25,17 +22,8 @@ export class CardComponent implements OnInit {
   constructor(private roomService: RoomService, private router: Router) { }
 
   ngOnInit(): void {
-      // this.getUrl();
       this.getRooms(this.getAPI(), this.getRoom());
   }
-
-  // getUrl(): void {
-  //   this.router.events.pipe(
-  //     filter(f => f instanceof NavigationEnd)
-  //   ).subscribe((s: any) => {
-  //       this.currentPath = s.url;
-  //   });
-  // }
 
   getAPI(): string {
     const api: string = this.apis[0];
