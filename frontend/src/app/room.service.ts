@@ -15,8 +15,8 @@ export class RoomService {
   // private host = 'http://localhost:4200/app';
   // buildしてhtmlを配置するだけならば、localhostで問題ない
   private host = 'http://localhost:8000';
-  private specifiedHost = this.host + '/specified?';
-  private multipleHost = this.host + '/multiple?';
+  private specifiedHost = this.host + '/specified?room=';
+  private multipleHost = this.host + '/multiple?room=';
 
   constructor(private http: HttpClient) { }
 
@@ -28,9 +28,9 @@ export class RoomService {
     if (api === '') {
       return this.host;
     } else if (api === 'specified') {
-      return this.specifiedHost + 'room=' + room;
+      return this.specifiedHost + room;
     } else if (api === 'multiple') {
-      return this.multipleHost + 'room=' + room;
+      return this.multipleHost + room;
     }
 
     return this.host;
