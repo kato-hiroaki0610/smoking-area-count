@@ -20,26 +20,25 @@ export class RoomService {
 
   constructor(private http: HttpClient) { }
 
-  getRooms(currentPath: string): Observable<Room[]> {
-    // APIとqueryを分割する
-    const query = currentPath ? currentPath.split('?') : '';
-    console.log(query);
-    let url: string;
-    if (query[0] === '/web') {
-      url = this.host;
-    } else if (query[0] === '/web/specified') {
-      url = this.specifiedHost + query[1];
-    } else if (query[0] === '/web/multiple') {
-      url = this.multipleHost + query[1];
-    } else {
-      url = this.host;
-    }
-
-    return this.callAPI(url);
+  getRooms(api: string, room: string): Observable<Room[]> {
+    return this.callAPI(this.createAPI(api, room));
   }
 
-  callAPI(url: string): Observable<Room[]> {
-    const rooms = this.http.get<Room[]>(url);
+  createAPI(api: string, room: string): string {
+    if (api === '') {
+      return this.host;
+    } else if (api === 'specified') {
+      return this.specifiedHost + 'room=' + room;
+    } else if (api === 'multiple') {
+      return this.multipleHost + '?room=' + room;
+    }
+
+    return this.host;
+  }
+
+  callAPI(api: string): Observable<Room[]> {
+    console.log(api);
+    const rooms = this.http.get<Room[]>(api);
     return rooms;
   }
 }
