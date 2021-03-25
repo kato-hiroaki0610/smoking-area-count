@@ -30,7 +30,7 @@ export class RoomService {
     } else if (api === 'specified') {
       return this.specifiedHost + 'room=' + room;
     } else if (api === 'multiple') {
-      return this.multipleHost + '?room=' + room;
+      return this.multipleHost + 'room=' + room;
     }
 
     return this.host;
