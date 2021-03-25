@@ -9,12 +9,10 @@ import { Room } from './card/room-info';
   providedIn: 'root'
 })
 export class RoomService {
-
   // フロントエンドとバックエンドでポートが異なると、CORSエラーになる
   // それを回避するためフロントエンドのポート番号「4200」を指定し
   // Angular CLIのリバースプロキシを利用してバックエンドとの通信を実現する
   // private host = 'http://localhost:4200/app';
-  // FIXME 以下のコメントのどちらが正しいかを検証する
   // buildしてhtmlを配置するだけならば、localhostで問題ない
   private host = 'http://localhost:8000';
   private specifiedHost = this.host + '/specified?';
