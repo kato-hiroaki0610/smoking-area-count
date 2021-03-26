@@ -49,13 +49,13 @@ export class CardComponent implements OnInit {
       const api: string = this.getAPI();
       const room: string = this.getRoom();
       this.roomService.getRooms(api, room)
-      .subscribe((rooms: Room[]) => {
-        const room: Room[] = rooms;
+      .subscribe((s: Room[]) => {
+        const roomsJson: Room[] = s;
         // 文字列でアクセスしたら、Lintで警告されるが、
         // ピリオドでアクセスしたらエラーで動かないためTsLintの
         // no-string-literalをdisableにする
         // tslint:disable-next-line:no-string-literal
-        this.roomStatus = room['room_status'];
+        this.roomStatus = roomsJson['room_status'];
       },
       error => {
         console.error(error.status + ':' + error.statusText);
