@@ -34,13 +34,12 @@ export class CardComponent implements OnInit {
   }
 
   getRoom(): string {
-    let tempRoom = '';
+    let room = '';
     this.currentRoom.forEach(r => {
-      tempRoom += this.rooms[r] + '&';
+      room += this.rooms[r] + '&';
     });
 
-    const room: string = tempRoom.slice(0, -1);
-    return room;
+    return room.slice(0, -1);
   }
 
   getRooms(): void {
