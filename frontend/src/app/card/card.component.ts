@@ -17,10 +17,10 @@ export class CardComponent implements OnInit {
 
   // FIXME: いずれConfigファイルからよむような感じにしたい
   private readonly apis: string[] = ['', 'specified', 'multiple'];
-  private readonly rooms: string[] = ['5階', '7階', '11階'];
+  private readonly rooms: string[] = ['5階', '9階', '11階'];
 
-  private readonly currentAPI: number = 1;
-  private readonly currentRoom: number = 1;
+  private readonly currentAPI: number = 0;
+  private readonly currentRoom: number[] = [0, 1];
 
   constructor(private roomService: RoomService, private router: Router) { }
 
@@ -34,8 +34,12 @@ export class CardComponent implements OnInit {
   }
 
   getRoom(): string {
-    // TODO: multipleの場合を考慮する
-    const room: string = this.rooms[this.currentRoom];
+    let tempRoom = '';
+    this.currentRoom.forEach(r => {
+      tempRoom += this.rooms[r] + '&';
+    });
+
+    const room: string = tempRoom.slice(0, -1);
     return room;
   }
 
