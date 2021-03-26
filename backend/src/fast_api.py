@@ -1,5 +1,6 @@
 import json
 import pathlib
+import sys
 from typing import List
 
 import uvicorn
@@ -29,10 +30,28 @@ app.add_middleware(
     allow_headers=['*']
 )
 
+
+def get_frontend_path(path) -> str:
+    """Webディレクトリのパスを取得する関数
+    Pyinstallerでパッケージングしたexeを実行するとTempフォルダに一時ファイルが展開される
+    展開先のパスは`sys._MEIPASS`で取得ができる
+
+    Args:
+        path(str): 取得するパス
+
+    Returns:
+        str: 取得したパス
+    """
+    if hasattr(sys, '_MEIPASS'):
+        return pathlib.Path(sys._MEIPASS) / path
+    return pathlib.Path('.') / path
+
+
 # ./webディレクトリ以下のファイルを静的ファイルとして指定
 # html=Trueを指定することにより、/webににアクセスすることでindex.htmlに自動的にアクセスするようにする
+web_directory = get_frontend_path('web')
 app.mount('/web',
-          StaticFiles(directory='./web', html=True),
+          StaticFiles(directory=web_directory, html=True),
           name='web')
 
 log = Log()
