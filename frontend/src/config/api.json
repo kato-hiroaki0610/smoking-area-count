@@ -17,12 +17,14 @@
   {
     "api":
     {
-      "/": true,
-      "specified": true,
-      "multiple": false
+      "/": false,
+      "specified": false,
+      "multiple": true
     },
     "room": [
-      "5階"
+      "5階",
+      "9階",
+      "11階"
     ]
   }
 }

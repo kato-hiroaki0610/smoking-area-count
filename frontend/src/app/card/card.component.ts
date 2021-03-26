@@ -17,11 +17,9 @@ import { apiSetting } from '../../config/api.json';
 export class CardComponent implements OnInit {
   public roomStatus: RoomStatus[];
 
-  private apis: string[] = ['', 'specified', 'multiple'];
+  private readonly apis: string[] = ['', 'specified', 'multiple'];
+  private readonly specifiedIndex: number = 1;
   private readonly rooms: string[] = ['5階', '9階', '11階'];
-
-  private readonly currentAPI: number = 0;
-  private readonly currentRoom: number[] = [0, 1];
 
   constructor(private roomService: RoomService, private router: Router) { }
 
@@ -46,21 +44,27 @@ export class CardComponent implements OnInit {
     return api;
   }
 
-  getRoom(currentRoom): string {
-    // TODO: エラーチェック、specifiedなのに部屋が複数あるとか......
-    let room = '';
-    this.currentRoom.forEach(r => {
-      room += this.rooms[r] + '&';
+  getRoom(api: string, rooms: string[]): string {
+    // apiがspecifiedなのに部屋が複数指定されている場合、最初の一つを返す
+    if (api === this.apis[this.specifiedIndex] && rooms.length > 1) {
+      return rooms[0];
+    }
+
+    let result = '';
+    const joinString = '&room=';
+    rooms.forEach(r => {
+      result += r + joinString;
     });
 
-    return room.slice(0, -1);
+    // 末尾の'&room='を削除する
+    return result.slice(0, -joinString.length);
   }
 
   getRooms(): void {
     const intervalTime = 2000;
     timer(0, intervalTime).subscribe(() => {
       const api: string = this.getAPI(apiSetting.api);
-      const room: string = this.getRoom(apiSetting.room);
+      const room: string = this.getRoom(api, apiSetting.room);
       this.roomService.getRooms(api, room)
       .subscribe((s: Room[]) => {
         const roomsJson: Room[] = s;
