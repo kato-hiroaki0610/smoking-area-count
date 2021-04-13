@@ -3,7 +3,7 @@
 block_cipher = None
 
 added_files = [
-   ('./web/*', 'web')
+   ('E:\\project\\smoking-area-count\\backend\\src\\web\\*', 'web')
 ]
 
 paths = [
