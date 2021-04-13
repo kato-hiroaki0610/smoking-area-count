@@ -4,8 +4,3 @@ __pycache__/
 assets/
 build/
 dist
-*.ico
-*.html
-*.js
-*.map
-*.css
