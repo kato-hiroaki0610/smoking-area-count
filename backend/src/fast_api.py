@@ -19,7 +19,6 @@ from logger import Log
 
 SETTING_FILE_DIR = 'setting'
 SETTING_FILE_NAME = 'setting.toml'
-EXISTS_ROOMS = ['5階', '9階', '11階']
 
 
 app = FastAPI()
@@ -105,8 +104,12 @@ async def redict_view(request: Request) -> RedirectResponse:
     request_rooms = [r.split('=')[-1] for r in rooms_tmp]
 
     if len(request_rooms) > 0:
-        # 'room=11階&room=9階'のようなパラメーターの場合でもEXISTS_ROOMSに格納されている順番に並べ替える
-        view_room = [r for r in EXISTS_ROOMS if r in request_rooms]
+
+        setting = read_toml()
+        exists_rooms = [s['場所'] for s in setting['area']]
+
+        # 'room=11階&room=9階'のようなパラメーターの場合でもexists_roomsに格納されている順番に並べ替える
+        view_room = [r for r in exists_rooms if r in request_rooms]
         # 'index_n階.html' 'index_n階_m階.html' htmlファイル名を表す文字列を作成する
         html_filename = index.format(''.join(['_' + r for r in view_room]))
     else:
