@@ -1,15 +1,16 @@
 import json
 import pathlib
 import sys
+import urllib.parse
 from typing import List
 
 import uvicorn
-from fastapi import FastAPI, status
+from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.params import Query
 from pydantic.fields import Required
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, RedirectResponse
 from starlette.staticfiles import StaticFiles
 
 from create_json import CreateJson
@@ -18,6 +19,8 @@ from logger import Log
 
 SETTING_FILE_DIR = 'setting'
 SETTING_FILE_NAME = 'setting.toml'
+EXISTS_ROOMS = ['5階', '9階', '11階']
+
 
 app = FastAPI()
 
@@ -76,6 +79,40 @@ def read_toml() -> dict:
         return toml_reader.get_contents()
     except FileNotFoundError:
         return
+
+
+@app.get('/select')
+async def redict_view(request: Request) -> RedirectResponse:
+    """HTMLにリダイレクトを行う
+
+    Args:
+        request(Request): Request
+
+    Returns:
+        RedirectResponse: RedirectResponse
+    """
+    index = 'web/index{0}.html'
+    # %エンコーディングされているのででコードを行う
+    room = urllib.parse.unquote(str(request.query_params))
+
+    # QueryParameterが存在しなければindex.htmlを返す
+    if not room:
+        return RedirectResponse(index.format(''))
+
+    # QueryParameterの&区切りのリストを作成する
+    rooms_tmp = room.split('&')
+    # 'room=n階'の'n階'部屋のみを格納したリスト
+    request_rooms = [r.split('=')[-1] for r in rooms_tmp]
+
+    if len(request_rooms) > 0:
+        # 'room=11階&room=9階'のようなパラメーターの場合でもEXISTS_ROOMSに格納されている順番に並べ替える
+        view_room = [r for r in EXISTS_ROOMS if r in request_rooms]
+        # 'index_n階.html' 'index_n階_m階.html' htmlファイル名を表す文字列を作成する
+        html_filename = index.format(''.join(['_' + r for r in view_room]))
+    else:
+        return RedirectResponse(index.format(''))
+
+    return RedirectResponse(html_filename)
 
 
 @app.get('/')
