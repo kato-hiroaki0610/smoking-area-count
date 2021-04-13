@@ -1,25 +1,11 @@
 {
-  "$apiComment": [
-    "使用するAPIの指定",
-    "/は全部屋の表示",
-    "specifiedは一つの部屋の表示",
-    "multipleは複数の部屋の表示"
-  ],
-  "$roomComment": [
-    "画面に表示する部屋の指定",
-    "'/'がtrueの場合は全部屋が表示されます",
-    "'specified'がtrueの場合は複数指定していても一番上の部屋のみ表示されます",
-    "'multiple'がtrueの場合は指定した部屋だけ表示されます。複数表示する場合は以下のように指定してください(バックスラッシュは無視)",
-    "  \"5階\",  ",
-    "  \"7階\"   "
-  ],
   "apiSetting":
   {
     "api":
     {
-      "/": false,
+      "/": true,
       "specified": false,
-      "multiple": true
+      "multiple": false
     },
     "room": [
       "5階",
