@@ -20,17 +20,17 @@ class CreateJson:
         self._setting = settings
         self._created_json = ''
 
-    def get_last_row(self, file_name_path: str) -> List or None:
+    def get_last_row(self, file_path: str) -> List or None:
         """CSVを読み込み最終行を取得する
 
         Args:
-            file_name(str): 読み込むCSVのファイルネームパス
+            file_path(str): 読み込むCSVのファイルパス
         Return:
             読み込んだCSVから最終行のみを返す
         """
         try:
             reader = csv_reader()
-            reader.set_file_path(file_name_path)
+            reader.set_file_path(file_path)
             reader.load_file()
             rows = reader.get_contents()
 
@@ -70,10 +70,10 @@ class CreateJson:
         Return:
             定員上限か
         """
-        capacity_limit = setting['定員上限']
-
-        if type(capacity_limit) != int:
-            capacity_limit = int(capacity_limit)
+        if type(setting['定員上限']) != int:
+            capacity_limit = int(setting['定員上限'])
+        else:
+            capacity_limit = setting['定員上限']
 
         if capacity_limit >= count:
             return False
@@ -81,7 +81,7 @@ class CreateJson:
             return True
 
     def execute_create(self) -> None:
-        """リストと辞書からJsonを作成する"""
+        """リストと辞書からjsonを作成する"""
         json_dict = []
         logger.debug(f'setting: {self._setting}')
 

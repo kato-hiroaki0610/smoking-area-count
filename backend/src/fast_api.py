@@ -104,7 +104,6 @@ async def redict_view(request: Request) -> RedirectResponse:
     request_rooms = [r.split('=')[-1] for r in rooms_tmp]
 
     if len(request_rooms) > 0:
-
         setting = read_toml()
         exists_rooms = [s['場所'] for s in setting['area']]
 
