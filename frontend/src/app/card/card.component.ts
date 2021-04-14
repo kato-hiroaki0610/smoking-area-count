@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { timer } from 'rxjs';
 
@@ -19,9 +18,8 @@ export class CardComponent implements OnInit {
 
   private readonly apis: string[] = ['', 'specified', 'multiple'];
   private readonly specifiedIndex: number = 1;
-  private readonly rooms: string[] = ['5階', '9階', '11階'];
 
-  constructor(private roomService: RoomService, private router: Router) { }
+  constructor(private roomService: RoomService) { }
 
   ngOnInit(): void {
       this.getRooms();
