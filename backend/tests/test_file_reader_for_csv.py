@@ -1,5 +1,4 @@
 import os
-import sys
 import unittest
 
 from file_reader_for_csv import FileReaderForCSV as frc
@@ -20,5 +19,5 @@ class TestFileReaderForCSV(unittest.TestCase):
         actual = csv_reader.get_contents()
         self.assertEqual(type(expected), type(actual))
 
-        expected = '2'
+        expected = '5'
         self.assertEqual(expected, actual[-1][self.detect_field_num])

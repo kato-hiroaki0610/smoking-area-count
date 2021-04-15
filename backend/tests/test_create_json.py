@@ -14,7 +14,7 @@ class TestCreateJson(unittest.TestCase):
         tests_dir = os.path.dirname(__file__)
         file_name = tests_dir + '/test_file/video_source.csv'
 
-        expected = ['video_source', 'ymd', 'hms', 'fff', '2']
+        expected = ['video_source', 'ymd', 'hms', 'fff', '5']
         actual = json_creater.get_last_row(file_name)
 
         self.assertEqual(expected, actual)
@@ -102,7 +102,7 @@ class TestCreateJson(unittest.TestCase):
 
         json_creater.execute_create()
         get_json = json_creater._created_json
-        expected = 4
+        expected = 5
 
         actual = len(get_json[0])
         self.assertEqual(expected, actual)
@@ -137,7 +137,7 @@ class TestCreateJson(unittest.TestCase):
                 '場所': 'bbb',
                 '利用者': file_name,
                 '待ち人数': '',
-                '定員上限': 11
+                '定員上限': 5
             }]
         }
         json_creater = CreateJson(setting)
@@ -150,49 +150,77 @@ class TestCreateJson(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         expected = setting['area'][0]['場所']
-        actual = created_json[0]['階数']
+        actual = created_json[0]['room']
         self.assertEqual(expected, actual)
 
-        expected = 2
-        actual = created_json[0]['利用者数']
+        expected = 5
+        actual = created_json[0]['use']
         self.assertEqual(expected, actual)
 
-        expected = 2
-        actual = created_json[0]['待ち人数']
+        expected = 5
+        actual = created_json[0]['wait']
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = created_json[0]['上限超え']
+        actual = created_json[0]['is_limit']
+        self.assertEqual(expected, actual)
+
+        expected = 10
+        actual = created_json[0]['limit']
         self.assertEqual(expected, actual)
 
         expected = setting['area'][1]['場所']
-        actual = created_json[1]['階数']
+        actual = created_json[1]['room']
         self.assertEqual(expected, actual)
 
         expected = ''
-        actual = created_json[1]['待ち人数']
+        actual = created_json[1]['wait']
         self.assertEqual(expected, actual)
 
-        expected = 2
-        actual = created_json[1]['利用者数']
+        expected = 5
+        actual = created_json[1]['use']
+        self.assertEqual(expected, actual)
+
+        expected = 3
+        actual = created_json[1]['limit']
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = created_json[1]['is_limit']
         self.assertEqual(expected, actual)
 
         expected = setting['area'][2]['場所']
-        actual = created_json[2]['階数']
+        actual = created_json[2]['room']
         self.assertEqual(expected, actual)
 
         expected = ''
-        actual = created_json[2]['利用者数']
+        actual = created_json[2]['use']
         self.assertEqual(expected, actual)
 
-        expected = 2
-        actual = created_json[2]['待ち人数']
+        expected = 5
+        actual = created_json[2]['wait']
         self.assertEqual(expected, actual)
 
-        expected = 2
-        actual = created_json[3]['利用者数']
+        expected = 11
+        actual = created_json[2]['limit']
         self.assertEqual(expected, actual)
 
         expected = ''
-        actual = created_json[3]['待ち人数']
+        actual = created_json[2]['is_limit']
+        self.assertEqual(expected, actual)
+
+        expected = 5
+        actual = created_json[3]['use']
+        self.assertEqual(expected, actual)
+
+        expected = ''
+        actual = created_json[3]['wait']
+        self.assertEqual(expected, actual)
+
+        expected = 5
+        actual = created_json[3]['limit']
+        self.assertEqual(expected, actual)
+
+        expected = False
+        actual = created_json[3]['is_limit']
         self.assertEqual(expected, actual)

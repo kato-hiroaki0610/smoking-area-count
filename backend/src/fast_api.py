@@ -32,6 +32,9 @@ app.add_middleware(
     allow_headers=['*']
 )
 
+log = Log()
+log.set_logger()
+
 
 def get_frontend_path(path) -> str:
     """Webディレクトリのパスを取得する関数
@@ -52,12 +55,10 @@ def get_frontend_path(path) -> str:
 # ./webディレクトリ以下のファイルを静的ファイルとして指定
 # html=Trueを指定することにより、/webににアクセスすることでindex.htmlに自動的にアクセスするようにする
 web_directory = get_frontend_path('web')
-app.mount('/web',
-          StaticFiles(directory=web_directory, html=True),
-          name='web')
-
-log = Log()
-log.set_logger()
+if pathlib.Path.exists(web_directory):
+    app.mount('/web',
+              StaticFiles(directory=web_directory, html=True),
+              name='web')
 
 
 def read_toml() -> dict:
@@ -74,7 +75,6 @@ def read_toml() -> dict:
         toml_reader = FileReaderForToml()
         toml_reader.set_file_path(setting_file_name)
         toml_reader.load_file()
-
         return toml_reader.get_contents()
     except FileNotFoundError:
         return

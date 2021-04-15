@@ -1,12 +1,43 @@
+import pathlib
 import unittest
 
+import toml
 from fast_api import app
 from starlette.testclient import TestClient
 
+SETTING_DIR = 'setting'
+SETTING_FILE = 'setting.toml'
+
 
 class TestFastAPI(unittest.TestCase):
+    def create_toml(self):
+        """setting用のtomlファイルを作成する"""
+        csv_file = 'E:\\project\\smoking-area-count\\' \
+                    'backend\\tests\\test_file\\video_source.csv' # noqa
+        toml_data = {
+            'detect_field_num': 4,
+            'area':
+            [
+              {'場所': '5階', '利用者': csv_file, '待ち人数': '', '定員上限': 5},
+              {'場所': '9階', '利用者': '', '待ち人数': '', '定員上限': 7},
+              {'場所': '11階', '利用者': '', '待ち人数': '', '定員上限': 5}
+            ]}
+
+        pathlib.Path(SETTING_DIR).mkdir()
+        pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).touch()
+
+        with open(SETTING_DIR + '\\' + SETTING_FILE, 'wt', 
+                  encoding='utf8') as fp:
+            toml.dump(toml_data, fp)
+
     def setUp(self):
+        """setting用のtomlファイルを削除する"""
+        self.create_toml()
         self.client = TestClient(app)
+
+    def tearDown(self):
+        pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).unlink()
+        pathlib.Path(SETTING_DIR).rmdir()
 
     def test_main(self):
         response = self.client.get('/')
@@ -16,25 +47,29 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         expecteds = [{
-            '階数': '5階',
-            '利用者数': 2,
-            '上限超え': False,
-            '待ち人数': 10
+            'room': '5階',
+            'use': 5,
+            'limit': 5,
+            'is_limit': False,
+            'wait': ''
         }, {
-            '階数': '9階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': ''
+            'room': '9階',
+            'use': '',
+            'limit': 7,
+            'is_limit': '',
+            'wait': ''
         }, {
-            '階数': '11階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': 8
+            'room': '11階',
+            'use': '',
+            'limit': 5,
+            'is_limit': '',
+            'wait': ''
         }, {
-            '階数': '12階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': 10
+            'room': '12階',
+            'use': '',
+            'limit': 5,
+            'is_limit': '',
+            'wait': 10
         }]
         response_json = response.json()
 
@@ -43,10 +78,12 @@ class TestFastAPI(unittest.TestCase):
 
         expected = len(expecteds[0])
         actual = response_json['room_status']
-
-        self.assertEqual(expected, len(actual))
+        self.assertEqual(expected, len(actual[0]))
 
         for i in range(len(expecteds)):
+            if(expecteds[i]['room'] == '12階'):
+                continue
+
             self.assertEqual(expecteds[i], actual[i])
 
     def test_specified_room(self):
@@ -58,38 +95,42 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         expecteds = [{
-            '階数': '5階',
-            '利用者数': 2,
-            '上限超え': False,
-            '待ち人数': 10
+            'room': '5階',
+            'use': 5,
+            'limit': 5,
+            'is_limit': False,
+            'wait': ''
         }, {
-            '階数': '9階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': ''
+            'room': '9階',
+            'use': '',
+            'limit': 7,
+            'is_limit': '',
+            'wait': ''
         }, {
-            '階数': '11階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': 8
+            'room': '11階',
+            'use': '',
+            'limit': 5,
+            'is_limit': '',
+            'wait': ''
         }, {
-            '階数': '12階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': 10
+            'room': '12階',
+            'use': '',
+            'limit': '',
+            'is_limit': '',
+            'wait': 10
         }]
         response_json = response.json()
-
+        print(response_json)
         expected = dict
         actual = type(response_json)
 
         expected = len(expecteds[0])
-        actual = response_json['specified_room_status']
+        actual = response_json['room_status']
 
         self.assertEqual(expected, len(actual[0]))
 
         for i in range(len(expecteds)):
-            if expecteds[i]['階数'] == target_room:
+            if expecteds[i]['room'] == target_room:
                 self.assertEqual(expecteds[i], actual[i])
                 break
 
@@ -116,24 +157,26 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_multiple_room(self):
-        target_rooms = ['5階', '9階', '12階']
+        target_rooms = ['5階', '9階', '11階']
         response = self.client.get(
-            f'/multiple?rooms={target_rooms[0]}&rooms={target_rooms[2]}')
+            f'/multiple?room={target_rooms[0]}&room={target_rooms[2]}')
 
         expected = 200
         actual = response.status_code
         self.assertEqual(expected, actual)
 
         expecteds = [{
-            '階数': '5階',
-            '利用者数': 2,
-            '上限超え': False,
-            '待ち人数': 10
+            'room': '5階',
+            'use': 5,
+            'limit': 5,
+            'is_limit': False,
+            'wait': ''
         }, {
-            '階数': '12階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': 10
+            'room': '11階',
+            'use': '',
+            'limit': 5,
+            'is_limit': '',
+            'wait': ''
         }]
         response_json = response.json()
 
@@ -141,7 +184,7 @@ class TestFastAPI(unittest.TestCase):
         actual = type(response_json)
 
         expected = len(expecteds[0])
-        actual = response_json['multiple_room_status']
+        actual = response_json['room_status']
 
         self.assertEqual(expected, len(actual[0]))
 
@@ -149,37 +192,40 @@ class TestFastAPI(unittest.TestCase):
             self.assertEqual(expecteds[i], actual[i])
 
         expecteds = [{
-            '階数': '5階',
-            '利用者数': 2,
-            '上限超え': False,
-            '待ち人数': 10
+            'room': '5階',
+            'use': 5,
+            'limit': 5,
+            'is_limit': False,
+            'wait': ''
         }, {
-            '階数': '9階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': ''
+            'room': '9階',
+            'use': '',
+            'limit': 7,
+            'is_limit': '',
+            'wait': ''
         }, {
-            '階数': '12階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': 10
+            'room': '11階',
+            'use': '',
+            'limit': 5,
+            'is_limit': '',
+            'wait': ''
         }]
 
         response = self.client.get('/multiple?'
-                                   f'rooms={target_rooms[0]}'
-                                   f'&rooms={target_rooms[1]}'
-                                   f'&rooms={target_rooms[2]}')
+                                   f'room={target_rooms[0]}'
+                                   f'&room={target_rooms[1]}'
+                                   f'&room={target_rooms[2]}')
         response_json = response.json()
-
+ 
         expected = len(expecteds[0])
-        actual = response_json['multiple_room_status']
+        actual = response_json['room_status']
 
         self.assertEqual(expected, len(actual[0]))
 
         for i in range(len(expecteds)):
             self.assertEqual(expecteds[i], actual[i])
 
-        response = self.client.get('/multiple?rooms=ff')
+        response = self.client.get('/multiple?room=ff')
         response_json = response.json()
 
         expected = 204
@@ -202,24 +248,26 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         expecteds = [{
-            '階数': '5階',
-            '利用者数': 2,
-            '上限超え': False,
-            '待ち人数': 10
+            'room': '5階',
+            'use': 5,
+            'limit': 5,
+            'is_limit': False,
+            'wait': ''
         }, {
-            '階数': '12階',
-            '利用者数': '',
-            '上限超え': '',
-            '待ち人数': 10
+            'room': '11階',
+            'use': '',
+            'limit': 5,
+            'is_limit': '',
+            'wait': ''
         }]
 
         response = self.client.get('/multiple?'
-                                   f'rooms={target_rooms[0]}'
-                                   f'&rooms=ff階'
-                                   f'&rooms={target_rooms[2]}')
+                                   f'room={target_rooms[0]}'
+                                   f'&room=ff階'
+                                   f'&room={target_rooms[2]}')
         response_json = response.json()
 
-        actual = response_json['multiple_room_status']
+        actual = response_json['room_status']
 
         for i in range(len(expecteds)):
             self.assertEqual(expecteds[i], actual[i])
