@@ -1,3 +1,4 @@
+import csv
 import pathlib
 import unittest
 
@@ -10,10 +11,8 @@ SETTING_FILE = 'setting.toml'
 
 
 class TestFastAPI(unittest.TestCase):
-    def create_toml(self):
+    def create_toml(self, csv_file):
         """setting用のtomlファイルを作成する"""
-        csv_file = 'E:\\project\\smoking-area-count\\' \
-                    'backend\\tests\\test_file\\video_source.csv' # noqa
         toml_data = {
             'detect_field_num': 4,
             'area':
@@ -30,16 +29,34 @@ class TestFastAPI(unittest.TestCase):
                   encoding='utf8') as fp:
             toml.dump(toml_data, fp)
 
+    def csv_create(self, csv_data, file_name):
+        """CSVを作成する"""
+        pathlib.Path('./\\' + file_name).touch()
+
+        with open(file_name, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(csv_data)
+
+    def remove_csv(self, file_name):
+        """CSVを削除する"""
+        pathlib.Path(file_name).unlink()
+
     def setUp(self):
-        """setting用のtomlファイルを削除する"""
-        self.create_toml()
         self.client = TestClient(app)
 
-    def tearDown(self):
+    def remove_toml(self):
         pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).unlink()
         pathlib.Path(SETTING_DIR).rmdir()
 
     def test_main(self):
+        csv_file_name = 'tmp.csv'
+        self.create_toml(csv_file_name)
+        csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                    ['video_source', 'ymd', 'hms', 'fff', '6'],
+                    ['video_source', 'ymd', 'hms', 'fff', '5']]
+        csv_file_name = 'tmp.csv'
+        self.csv_create(csv_data, csv_file_name)
+
         response = self.client.get('/')
 
         expected = 200
@@ -86,7 +103,18 @@ class TestFastAPI(unittest.TestCase):
 
             self.assertEqual(expecteds[i], actual[i])
 
+        self.remove_csv(csv_file_name)
+        self.remove_toml()
+
     def test_specified_room(self):
+        csv_file_name = 'tmp.csv'
+        self.create_toml(csv_file_name)
+        csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                    ['video_source', 'ymd', 'hms', 'fff', '6'],
+                    ['video_source', 'ymd', 'hms', 'fff', '5']]
+        csv_file_name = 'tmp.csv'
+        self.csv_create(csv_data, csv_file_name)
+
         target_room = '5階'
         response = self.client.get(f'/specified?room={target_room}')
 
@@ -155,7 +183,18 @@ class TestFastAPI(unittest.TestCase):
         actual = response_json['detail'][0]['msg']
         self.assertEqual(expected, actual)
 
+        self.remove_csv(csv_file_name)
+        self.remove_toml()
+
     def test_multiple_room(self):
+        csv_file_name = 'tmp.csv'
+        self.create_toml(csv_file_name)
+        csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                    ['video_source', 'ymd', 'hms', 'fff', '6'],
+                    ['video_source', 'ymd', 'hms', 'fff', '5']]
+        csv_file_name = 'tmp.csv'
+        self.csv_create(csv_data, csv_file_name)
+
         target_rooms = ['5階', '9階', '11階']
         response = self.client.get(
             f'/multiple?room={target_rooms[0]}&room={target_rooms[2]}')
@@ -270,3 +309,6 @@ class TestFastAPI(unittest.TestCase):
 
         for i in range(len(expecteds)):
             self.assertEqual(expecteds[i], actual[i])
+
+        self.remove_csv(csv_file_name)
+        self.remove_toml()

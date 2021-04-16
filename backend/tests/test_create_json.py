@@ -1,6 +1,7 @@
 """CreateJsonクラスのテスト"""
 
-import os
+import csv
+import pathlib
 import unittest
 
 from create_json import CreateJson
@@ -8,16 +9,34 @@ from create_json import CreateJson
 
 class TestCreateJson(unittest.TestCase):
     """CreateJsonクラスのテスト"""
+    def csv_create(self, csv_data, file_name):
+        """CSVを作成する"""
+        pathlib.Path('./\\' + file_name).touch()
+
+        with open(file_name, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(csv_data)
+
+    def remove_csv(self, file_name):
+        """CSVを削除する"""
+        pathlib.Path(file_name).unlink()
+
     def test_get_last_row(self):
         """get_last_rowメソッドのテスト"""
         json_creater = CreateJson({})
-        tests_dir = os.path.dirname(__file__)
-        file_name = tests_dir + '/test_file/video_source.csv'
+
+        csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                    ['video_source', 'ymd', 'hms', 'fff', '6'],
+                    ['video_source', 'ymd', 'hms', 'fff', '5']]
+        csv_file_name = 'tmp.csv'
+        self.csv_create(csv_data, csv_file_name)
 
         expected = ['video_source', 'ymd', 'hms', 'fff', '5']
-        actual = json_creater.get_last_row(file_name)
+        actual = json_creater.get_last_row(csv_file_name)
 
         self.assertEqual(expected, actual)
+
+        self.remove_csv(csv_file_name)
 
     def test_get_detect_column(self):
         """get_detect_columnのテスト"""
@@ -89,7 +108,8 @@ class TestCreateJson(unittest.TestCase):
 
     def test_execute_create(self):
         """execute_createのテスト"""
-        json_creater = CreateJson({
+
+        setting_data = {
             'detect_field_num':
             1,
             'area': [{
@@ -98,7 +118,9 @@ class TestCreateJson(unittest.TestCase):
                 '待ち人数': 'path/to/csv',
                 '定員上限': 10
             }]
-        })
+        }
+
+        json_creater = CreateJson(setting_data)
 
         json_creater.execute_create()
         get_json = json_creater._created_json
@@ -111,31 +133,56 @@ class TestCreateJson(unittest.TestCase):
         actual = [type(get_json), type(get_json[0])]
         self.assertEqual(expected, actual)
 
+        expected = [{'room': '5階', 'use': '', 'is_limit': '',
+                     'wait': '', 'limit': 10}]
+        actual = get_json
+        self.assertEqual(expected, actual)
+
+        setting_data = {
+            'detect_field_num':
+            1,
+            'area': [{
+                '場所': '7階',
+                '利用者': 'path/to/csv',
+                '待ち人数': 'path/to/csv',
+                '定員上限': 10
+            }]
+        }
+
+        json_creater = CreateJson(setting_data)
+
+        json_creater.execute_create()
+        get_json = json_creater._created_json
+
     def test_get_created_json(self):
         """get_created_jsonのテスト"""
-        tests_dir = os.path.dirname(__file__)
-        file_name = tests_dir + '/test_file/video_source.csv'
+        csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                    ['video_source', 'ymd', 'hms', 'fff', '6'],
+                    ['video_source', 'ymd', 'hms', 'fff', '5']]
+        csv_file_name = 'tmp.csv'
+        self.csv_create(csv_data, csv_file_name)
+
         setting = {
             'detect_field_num':
             4,
             'area': [{
                 '場所': '5階',
-                '利用者': file_name,
-                '待ち人数': file_name,
+                '利用者': csv_file_name,
+                '待ち人数': csv_file_name,
                 '定員上限': 10
             }, {
                 '場所': '9階',
-                '利用者': file_name,
+                '利用者': csv_file_name,
                 '待ち人数': '',
                 '定員上限': 3
             }, {
                 '場所': 'aaa',
                 '利用者': 'ddd',
-                '待ち人数': file_name,
+                '待ち人数': csv_file_name,
                 '定員上限': 11
             }, {
                 '場所': 'bbb',
-                '利用者': file_name,
+                '利用者': csv_file_name,
                 '待ち人数': '',
                 '定員上限': 5
             }]
