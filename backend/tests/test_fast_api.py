@@ -120,7 +120,6 @@ class TestFastAPI(unittest.TestCase):
             'wait': 10
         }]
         response_json = response.json()
-        print(response_json)
         expected = dict
         actual = type(response_json)
 

@@ -76,15 +76,15 @@ class TestCreateJson(unittest.TestCase):
 
         contents['定員上限'] = '5'
         expected = False
-        actual = json_creater.is_capacity_over(contents, 4)
+        actual = json_creater.is_capacity_over(contents, '4')
         self.assertEqual(expected, actual)
 
         expected = False
-        actual = json_creater.is_capacity_over(contents, 5)
+        actual = json_creater.is_capacity_over(contents, '5')
         self.assertEqual(expected, actual)
 
         expected = True
-        actual = json_creater.is_capacity_over(contents, 6)
+        actual = json_creater.is_capacity_over(contents, '6')
         self.assertEqual(expected, actual)
 
     def test_execute_create(self):

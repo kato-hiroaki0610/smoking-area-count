@@ -66,6 +66,7 @@ class CreateJson:
             Trueなら定員上限、Falseなら空きがある
 
         Args:
+            setting(dict): 設定ファイルを読み込んだ辞書
             count(int): 検知数
         Return:
             定員上限か
@@ -75,7 +76,12 @@ class CreateJson:
         else:
             capacity_limit = setting['定員上限']
 
-        if capacity_limit >= count:
+        if type(count) != int:
+            detect_num = int(count)
+        else:
+            detect_num = count
+
+        if capacity_limit >= detect_num:
             return False
         else:
             return True
