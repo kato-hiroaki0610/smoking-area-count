@@ -43,13 +43,16 @@ class TestFastAPI(unittest.TestCase):
         pathlib.Path(file_name).unlink()
 
     def setUp(self):
+        """webディレクトリを作成し、clientのインスタンスを作成する"""
         pathlib.Path('web').mkdir()
         self.client = TestClient(app)
 
     def tearDown(self):
+        """webディレクトリを削除する"""
         pathlib.Path('web').rmdir()
 
     def test_main(self):
+        """/APIのテスト"""
         csv_file_name = 'tmp.csv'
         csv_file_name2 = 'tmp2.csv'
 
@@ -127,6 +130,7 @@ class TestFastAPI(unittest.TestCase):
         self.remove_toml()
 
     def test_specified_room(self):
+        """specified apiのテスト"""
         csv_file_name = 'tmp.csv'
         toml_data = {
             'detect_field_num': 4,
@@ -230,6 +234,7 @@ class TestFastAPI(unittest.TestCase):
         self.remove_toml()
 
     def test_multiple_room(self):
+        """multiple apiのテスト"""
         csv_file_name = 'tmp.csv'
         toml_data = {
             'detect_field_num': 4,
@@ -380,6 +385,7 @@ class TestFastAPI(unittest.TestCase):
         self.remove_toml()
 
     def test_get_frontend_path(self):
+        """get_frontend_pathのテスト"""
         expect = 'web'
         actual = str(get_frontend_path('web'))
         self.assertEqual(expect, actual)
@@ -407,6 +413,7 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(err_message, actual)
 
     def test_read_toml(self):
+        """read_tomlのテスト"""
         toml_data = {
             'detect_field_num': 4,
             'area':
@@ -430,6 +437,7 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(err_message, actual)
 
     def test_redict_view(self):
+        """select apiのテスト"""
         toml_data = {
             'detect_field_num': 4,
             'area':
