@@ -86,8 +86,8 @@ def read_toml() -> dict:
         toml_reader.set_file_path(setting_file_name)
         toml_reader.load_file()
         return toml_reader.get_contents()
-    except FileNotFoundError:
-        return
+    except FileNotFoundError as e:
+        raise FileNotFoundError(e)
 
 
 @app.get('/select')
@@ -106,7 +106,8 @@ async def redict_view(request: Request) -> RedirectResponse:
 
     # QueryParameterが存在しなければindex.htmlを返す
     if not room:
-        return RedirectResponse(index.format(''))
+        return RedirectResponse(url=index.format(''),
+                                status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
     # QueryParameterの&区切りのリストを作成する
     rooms_tmp = room.split('&')
@@ -122,9 +123,12 @@ async def redict_view(request: Request) -> RedirectResponse:
         # 'index_n階.html' 'index_n階_m階.html' htmlファイル名を表す文字列を作成する
         html_filename = index.format(''.join(['_' + r for r in view_room]))
     else:
-        return RedirectResponse(index.format(''))
+        return RedirectResponse(url=index.format(''),
+                                status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
-    return RedirectResponse(html_filename)
+    # return RedirectResponse(html_filename)
+    return RedirectResponse(url=html_filename,
+                            status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
 
 @app.get('/')

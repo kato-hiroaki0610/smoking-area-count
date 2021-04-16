@@ -2,6 +2,7 @@ import csv
 import pathlib
 import sys
 import unittest
+import urllib
 
 import toml
 from fast_api import app, get_frontend_path, read_toml
@@ -388,7 +389,7 @@ class TestFastAPI(unittest.TestCase):
             get_frontend_path(path)
 
         err_message = f'"{path}" directory not found. ' \
-                   'Unable to display web screen'
+                      'Unable to display web screen'
         actual = str(e.exception)
         self.assertEqual(err_message, actual)
 
@@ -406,7 +407,70 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(err_message, actual)
 
     def test_read_toml(self):
-        pass
+        toml_data = {
+            'detect_field_num': 4,
+            'area':
+            [
+              {'場所': '5階', '利用者': 'path/to/csv1', '待ち人数': 'path/to/csv1-2',
+               '定員上限': 5},
+              {'場所': '9階', '利用者': 'path/to/csv2', '待ち人数': '', '定員上限': 7},
+              {'場所': '11階', '利用者': '', '待ち人数': 'path/to/csv3', '定員上限': 5}
+            ]}
+        self.create_toml(toml_data)
+
+        actual = read_toml()
+        self.assertEqual(toml_data, actual)
+        self.remove_toml()
+
+        with self.assertRaises(FileNotFoundError) as e:
+            read_toml()
+
+        err_message = 'setting\\setting.tomlが見つかりませんでした'
+        actual = str(e.exception)
+        self.assertEqual(err_message, actual)
 
     def test_redict_view(self):
-        pass
+        toml_data = {
+            'detect_field_num': 4,
+            'area':
+            [
+              {'場所': '5階', '利用者': 'path/to/csv1', '待ち人数': 'path/to/csv1-2',
+               '定員上限': 5},
+              {'場所': '9階', '利用者': 'path/to/csv2', '待ち人数': '', '定員上限': 7},
+              {'場所': '11階', '利用者': '', '待ち人数': 'path/to/csv3', '定員上限': 5}
+            ]}
+        self.create_toml(toml_data)
+
+        urls = [
+            '/select',
+            '/select?room=5階',
+            '/select?room=9階',
+            '/select?room=11階',
+            '/select?room=5階&room=9階',
+            '/select?room=5階&room=11階',
+            '/select?room=9階&room=11階',
+            '/select?room=11階&room=9階',
+            '/select?room=5階&room=9階',
+            '/select?room=5階&room=9階&room=11階',
+        ]
+
+        expecteds = [
+            'web/index.html',
+            'web/index_5階.html',
+            'web/index_9階.html',
+            'web/index_11階.html',
+            'web/index_5階_9階.html',
+            'web/index_5階_11階.html',
+            'web/index_9階_11階.html',
+            'web/index_9階_11階.html',
+            'web/index_5階_9階.html',
+            'web/index_5階_9階_11階.html',
+        ]
+
+        for t in zip(urls, expecteds):
+            response = self.client.get(t[0])
+            expected = t[1]
+            actual = urllib.parse.unquote(str(response.url))
+            self.assertTrue(expected in actual)
+
+        self.remove_toml()
