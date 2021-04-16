@@ -467,9 +467,8 @@ class TestFastAPI(unittest.TestCase):
             'web/index_5階_9階_11階.html',
         ]
 
-        for t in zip(urls, expecteds):
-            response = self.client.get(t[0])
-            expected = t[1]
+        for url, expected in zip(urls, expecteds):
+            response = self.client.get(url)
             actual = urllib.parse.unquote(str(response.url))
             self.assertTrue(expected in actual)
 
