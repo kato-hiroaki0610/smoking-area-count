@@ -48,17 +48,27 @@ def get_frontend_path(path) -> str:
         str: 取得したパス
     """
     if hasattr(sys, '_MEIPASS'):
-        return pathlib.Path(sys._MEIPASS) / path
-    return pathlib.Path('.') / path
+        result = pathlib.Path(sys._MEIPASS) / path
+    else:
+        result = pathlib.Path('.') / path
+
+    error_message = f'"{path}" directory not found. ' \
+                    'Unable to display web screen'
+    if not pathlib.Path(result).exists():
+        raise FileNotFoundError(error_message)
+    return result
 
 
 # ./webディレクトリ以下のファイルを静的ファイルとして指定
 # html=Trueを指定することにより、/webににアクセスすることでindex.htmlに自動的にアクセスするようにする
-web_directory = get_frontend_path('web')
-if pathlib.Path.exists(web_directory):
-    app.mount('/web',
-              StaticFiles(directory=web_directory, html=True),
-              name='web')
+try:
+    web_directory = get_frontend_path('web')
+    if pathlib.Path.exists(web_directory):
+        app.mount('/web',
+                  StaticFiles(directory=web_directory, html=True),
+                  name='web')
+except FileNotFoundError as e:
+    log.logger.debug(str(e))
 
 
 def read_toml() -> dict:

@@ -1,9 +1,10 @@
 import csv
 import pathlib
+import sys
 import unittest
 
 import toml
-from fast_api import app
+from fast_api import app, get_frontend_path, read_toml
 from starlette.testclient import TestClient
 
 SETTING_DIR = 'setting'
@@ -19,9 +20,14 @@ class TestFastAPI(unittest.TestCase):
         pathlib.Path(SETTING_DIR).mkdir()
         pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).touch()
 
-        with open(SETTING_DIR + '\\' + SETTING_FILE, 'wt', 
+        with open(SETTING_DIR + '\\' + SETTING_FILE, 'wt',
                   encoding='utf8') as fp:
             toml.dump(toml_data, fp)
+
+    def remove_toml(self):
+        """tomlを削除する"""
+        pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).unlink()
+        pathlib.Path(SETTING_DIR).rmdir()
 
     def csv_create(self, csv_data, file_name):
         """CSVを作成する"""
@@ -36,11 +42,11 @@ class TestFastAPI(unittest.TestCase):
         pathlib.Path(file_name).unlink()
 
     def setUp(self):
+        pathlib.Path('web').mkdir()
         self.client = TestClient(app)
 
-    def remove_toml(self):
-        pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).unlink()
-        pathlib.Path(SETTING_DIR).rmdir()
+    def tearDown(self):
+        pathlib.Path('web').rmdir()
 
     def test_main(self):
         csv_file_name = 'tmp.csv'
@@ -371,3 +377,36 @@ class TestFastAPI(unittest.TestCase):
 
         self.remove_csv(csv_file_name)
         self.remove_toml()
+
+    def test_get_frontend_path(self):
+        expect = 'web'
+        actual = str(get_frontend_path('web'))
+        self.assertEqual(expect, actual)
+
+        path = 'raise_test'
+        with self.assertRaises(FileNotFoundError) as e:
+            get_frontend_path(path)
+
+        err_message = f'"{path}" directory not found. ' \
+                   'Unable to display web screen'
+        actual = str(e.exception)
+        self.assertEqual(err_message, actual)
+
+        # _MEIPASSが存在する場合のテスト
+        sys._MEIPASS = '.'
+        expect = 'web'
+        actual = str(get_frontend_path('web'))
+        self.assertEqual(expect, actual)
+
+        path = 'raise_test'
+        with self.assertRaises(FileNotFoundError) as e:
+            get_frontend_path(path)
+
+        actual = str(e.exception)
+        self.assertEqual(err_message, actual)
+
+    def test_read_toml(self):
+        pass
+
+    def test_redict_view(self):
+        pass
