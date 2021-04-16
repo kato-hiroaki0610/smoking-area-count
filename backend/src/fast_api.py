@@ -158,7 +158,7 @@ async def specified_room(room: str) -> json:
             target_room['area'] = [area]
             break
 
-    # 存在部屋をURLに打ち込んだ場合
+    # 存在する部屋をURLに打ち込んだ場合
     if 'area' not in target_room.keys():
         error_result = {'detail': [{'msg': 'room not found'}]}
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT,

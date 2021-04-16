@@ -11,16 +11,10 @@ SETTING_FILE = 'setting.toml'
 
 
 class TestFastAPI(unittest.TestCase):
-    def create_toml(self, csv_file):
+    def create_toml(self, toml_data):
         """setting用のtomlファイルを作成する"""
-        toml_data = {
-            'detect_field_num': 4,
-            'area':
-            [
-              {'場所': '5階', '利用者': csv_file, '待ち人数': '', '定員上限': 5},
-              {'場所': '9階', '利用者': '', '待ち人数': '', '定員上限': 7},
-              {'場所': '11階', '利用者': '', '待ち人数': '', '定員上限': 5}
-            ]}
+        if pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).exists():
+            self.remove_toml()
 
         pathlib.Path(SETTING_DIR).mkdir()
         pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).touch()
@@ -50,12 +44,25 @@ class TestFastAPI(unittest.TestCase):
 
     def test_main(self):
         csv_file_name = 'tmp.csv'
-        self.create_toml(csv_file_name)
+        csv_file_name2 = 'tmp2.csv'
+
+        toml_data = {
+            'detect_field_num': 4,
+            'area':
+            [
+              {'場所': '5階', '利用者': csv_file_name, '待ち人数': '', '定員上限': 5},
+              {'場所': '9階', '利用者': '', '待ち人数': '', '定員上限': 7},
+              {'場所': '11階', '利用者': '', '待ち人数': '', '定員上限': 5},
+              {'場所': '12階', '利用者': '', '待ち人数': csv_file_name2, '定員上限': 5}
+            ]}
+        self.create_toml(toml_data)
         csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
                     ['video_source', 'ymd', 'hms', 'fff', '6'],
                     ['video_source', 'ymd', 'hms', 'fff', '5']]
-        csv_file_name = 'tmp.csv'
         self.csv_create(csv_data, csv_file_name)
+        csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                    ['video_source', 'ymd', 'hms', 'fff', '10']]
+        self.csv_create(csv_data, csv_file_name2)
 
         response = self.client.get('/')
 
@@ -93,34 +100,40 @@ class TestFastAPI(unittest.TestCase):
         expected = dict
         actual = type(response_json)
 
+        is_room_status_key_exists = 'room_status' in response_json.keys()
+        self.assertTrue(is_room_status_key_exists)
+
         expected = len(expecteds[0])
         actual = response_json['room_status']
         self.assertEqual(expected, len(actual[0]))
-
         for i in range(len(expecteds)):
-            if(expecteds[i]['room'] == '12階'):
-                continue
-
+            is_key_exists = actual[i].keys() >= {'room',
+                                                 'use',
+                                                 'limit',
+                                                 'is_limit',
+                                                 'wait'}
+            self.assertTrue(is_key_exists)
             self.assertEqual(expecteds[i], actual[i])
 
         self.remove_csv(csv_file_name)
+        self.remove_csv(csv_file_name2)
         self.remove_toml()
 
     def test_specified_room(self):
         csv_file_name = 'tmp.csv'
-        self.create_toml(csv_file_name)
+        toml_data = {
+            'detect_field_num': 4,
+            'area':
+            [
+              {'場所': '5階', '利用者': csv_file_name, '待ち人数': '', '定員上限': 5},
+              {'場所': '9階', '利用者': '', '待ち人数': '', '定員上限': 7},
+              {'場所': '11階', '利用者': '', '待ち人数': '', '定員上限': 5},
+            ]}
+        self.create_toml(toml_data)
         csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
                     ['video_source', 'ymd', 'hms', 'fff', '6'],
                     ['video_source', 'ymd', 'hms', 'fff', '5']]
-        csv_file_name = 'tmp.csv'
         self.csv_create(csv_data, csv_file_name)
-
-        target_room = '5階'
-        response = self.client.get(f'/specified?room={target_room}')
-
-        expected = 200
-        actual = response.status_code
-        self.assertEqual(expected, actual)
 
         expecteds = [{
             'room': '5階',
@@ -143,42 +156,65 @@ class TestFastAPI(unittest.TestCase):
         }, {
             'room': '12階',
             'use': '',
-            'limit': '',
+            'limit': 5,
             'is_limit': '',
             'wait': 10
         }]
-        response_json = response.json()
-        expected = dict
-        actual = type(response_json)
 
-        expected = len(expecteds[0])
-        actual = response_json['room_status']
+        target_room = ['5階', '9階']
+        responses = {}
+        for t in target_room:
+            responses[t] = self.client.get(f'/specified?room={t}')
 
-        self.assertEqual(expected, len(actual[0]))
+        # 複数のパラメーターを期待していない場合FastAPIが自動で末尾のパラメーターのみにしてくれる
+        target_room.append('11階')
+        responses['11階'] = self.client.get('/specified?room=5階&room=11階')
+
+        for r in responses.values():
+            expected = 200
+            actual = r.status_code
+            self.assertEqual(expected, actual)
+
+            response_json = r.json()
+            expected = dict
+            actual = type(response_json)
+
+            is_room_status_key_exists = 'room_status' in response_json.keys()
+            self.assertTrue(is_room_status_key_exists)
+
+            expected = len(expecteds[0])
+            actual = response_json['room_status']
+            self.assertEqual(expected, len(actual[0]))
 
         for i in range(len(expecteds)):
-            if expecteds[i]['room'] == target_room:
-                self.assertEqual(expecteds[i], actual[i])
-                break
+            if expecteds[i]['room'] in target_room:
+                tmp = responses[expecteds[i]['room']]
+                response_json = tmp.json()
+                actual = response_json['room_status']
+                is_key_exists = actual[0].keys() >= {'room',
+                                                     'use',
+                                                     'limit',
+                                                     'is_limit',
+                                                     'wait'}
+                self.assertTrue(is_key_exists)
+                self.assertEqual(expecteds[i], actual[0])
 
-        response = self.client.get('/specified?room=ff')
-        response_json = response.json()
-
+        response = self.client.get('/specified?room=15階')
         expected = 204
         actual = response.status_code
         self.assertEqual(expected, actual)
 
+        response_json = response.json()
         expected = 'room not found'
         actual = response_json['detail'][0]['msg']
         self.assertEqual(expected, actual)
 
         response = self.client.get('/specified?roo')
-        response_json = response.json()
-
         expected = 422
         actual = response.status_code
         self.assertEqual(expected, actual)
 
+        response_json = response.json()
         expected = 'field required'
         actual = response_json['detail'][0]['msg']
         self.assertEqual(expected, actual)
@@ -188,11 +224,18 @@ class TestFastAPI(unittest.TestCase):
 
     def test_multiple_room(self):
         csv_file_name = 'tmp.csv'
-        self.create_toml(csv_file_name)
+        toml_data = {
+            'detect_field_num': 4,
+            'area':
+            [
+              {'場所': '5階', '利用者': csv_file_name, '待ち人数': '', '定員上限': 5},
+              {'場所': '9階', '利用者': '', '待ち人数': '', '定員上限': 7},
+              {'場所': '11階', '利用者': '', '待ち人数': '', '定員上限': 5}
+            ]}
+        self.create_toml(toml_data)
         csv_data = [['video_source', 'ymd', 'hms', 'fff', '5'],
                     ['video_source', 'ymd', 'hms', 'fff', '6'],
                     ['video_source', 'ymd', 'hms', 'fff', '5']]
-        csv_file_name = 'tmp.csv'
         self.csv_create(csv_data, csv_file_name)
 
         target_rooms = ['5階', '9階', '11階']
@@ -221,12 +264,21 @@ class TestFastAPI(unittest.TestCase):
         expected = dict
         actual = type(response_json)
 
+        is_room_status_key_exists = 'room_status' in response_json.keys()
+        self.assertTrue(is_room_status_key_exists)
+
         expected = len(expecteds[0])
         actual = response_json['room_status']
 
         self.assertEqual(expected, len(actual[0]))
 
         for i in range(len(expecteds)):
+            is_key_exists = actual[i].keys() >= {'room',
+                                                 'use',
+                                                 'limit',
+                                                 'is_limit',
+                                                 'wait'}
+            self.assertTrue(is_key_exists)
             self.assertEqual(expecteds[i], actual[i])
 
         expecteds = [{
@@ -254,16 +306,23 @@ class TestFastAPI(unittest.TestCase):
                                    f'&room={target_rooms[1]}'
                                    f'&room={target_rooms[2]}')
         response_json = response.json()
- 
+
         expected = len(expecteds[0])
         actual = response_json['room_status']
-
+        is_room_status_key_exists = 'room_status' in response_json.keys()
+        self.assertTrue(is_room_status_key_exists)
         self.assertEqual(expected, len(actual[0]))
 
         for i in range(len(expecteds)):
+            is_key_exists = actual[i].keys() >= {'room',
+                                                 'use',
+                                                 'limit',
+                                                 'is_limit',
+                                                 'wait'}
+            self.assertTrue(is_key_exists)
             self.assertEqual(expecteds[i], actual[i])
 
-        response = self.client.get('/multiple?room=ff')
+        response = self.client.get('/multiple?room=15階&room=20階')
         response_json = response.json()
 
         expected = 204
