@@ -109,14 +109,34 @@ class TestCreateJson(unittest.TestCase):
     def test_execute_create(self):
         """execute_createのテスト"""
 
+        csv_file_name1 = 'tmp_1.csv'
+        csv_data1 = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                     ['video_source', 'ymd', 'hms', 'fff', '5']]
+        self.csv_create(csv_data1, csv_file_name1)
+
+        csv_file_name2 = 'tmp_2.csv'
+        csv_data2 = [['video_source', 'ymd', 'hms', 'fff', '5'],
+                     ['video_source', 'ymd', 'hms', 'fff', '10']]
+        self.csv_create(csv_data2, csv_file_name2)
+
         setting_data = {
             'detect_field_num':
-            1,
+            4,
             'area': [{
                 '場所': '5階',
-                '利用者': 'path/to/csv',
+                '利用者': csv_file_name1,
                 '待ち人数': 'path/to/csv',
                 '定員上限': 10
+            }, {
+                '場所': '12階',
+                '利用者': csv_file_name1,
+                '待ち人数': 'path/to/csv',
+                '定員上限': 3
+            }, {
+                '場所': '9階',
+                '利用者': 'path/to/csv',
+                '待ち人数': csv_file_name2,
+                '定員上限': 5
             }]
         }
 
@@ -124,17 +144,21 @@ class TestCreateJson(unittest.TestCase):
 
         json_creater.execute_create()
         get_json = json_creater._created_json
-        expected = 5
-
-        actual = len(get_json[0])
-        self.assertEqual(expected, actual)
 
         expected = [list, dict]
         actual = [type(get_json), type(get_json[0])]
         self.assertEqual(expected, actual)
 
-        expected = [{'room': '5階', 'use': '', 'is_limit': '',
-                     'wait': '', 'limit': 10}]
+        expected = 5
+        actual = len(get_json[0])
+        self.assertEqual(expected, actual)
+
+        expected = [{'room': '5階', 'use': 5, 'is_limit': False,
+                     'wait': '', 'limit': 10},
+                    {'room': '12階', 'use': 5, 'is_limit': True,
+                     'wait': '', 'limit': 3},
+                    {'room': '9階', 'use': '', 'is_limit': '',
+                     'wait': 10, 'limit': 5}]
         actual = get_json
         self.assertEqual(expected, actual)
 
@@ -145,14 +169,21 @@ class TestCreateJson(unittest.TestCase):
                 '場所': '7階',
                 '利用者': 'path/to/csv',
                 '待ち人数': 'path/to/csv',
-                '定員上限': 10
+                '定員上限': 4
             }]
         }
 
         json_creater = CreateJson(setting_data)
 
+        expected = [{'room': '7階', 'use': '', 'is_limit': '',
+                     'wait': '', 'limit': 4}]
+
         json_creater.execute_create()
-        get_json = json_creater._created_json
+        actual = json_creater._created_json
+        self.assertEqual(expected, actual)
+
+        self.remove_csv(csv_file_name1)
+        self.remove_csv(csv_file_name2)
 
     def test_get_created_json(self):
         """get_created_jsonのテスト"""
