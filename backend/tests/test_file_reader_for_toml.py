@@ -13,7 +13,7 @@ class TestFileReaderFortoml(unittest.TestCase):
         """setting用のtomlファイルを作成する"""
         csv_file = 'E:\\project\\smoking-area-count\\' \
                     'backend\\tests\\test_file\\video_source.csv' # noqa
-        toml_data = {
+        self.toml_data = {
             'detect_field_num': 4,
             'area':
             [
@@ -27,7 +27,7 @@ class TestFileReaderFortoml(unittest.TestCase):
 
         with open(SETTING_DIR + '\\' + SETTING_FILE, 'wt', 
                   encoding='utf8') as fp:
-            toml.dump(toml_data, fp)
+            toml.dump(self.toml_data, fp)
 
     def setUp(self):
         self.create_toml()
@@ -37,12 +37,68 @@ class TestFileReaderFortoml(unittest.TestCase):
         pathlib.Path(SETTING_DIR + '\\' + SETTING_FILE).unlink()
         pathlib.Path(SETTING_DIR).rmdir()
 
+    def test_set_file_path(self):
+        toml_reader = frt()
+        toml_reader.set_file_path(self.file_name)
+        actual = toml_reader._file_path
+
+        self.assertEqual(self.file_name, actual)
+
+        expected = 'path/to/csv'
+        toml_reader.set_file_path('path/to/csv')
+        actual = toml_reader._file_path
+
+        self.assertEqual(expected, actual)
+
+    def test_load_file(self):
+        toml_reader = frt()
+        toml_reader.set_file_path(self.file_name)
+        toml_reader.load_file()
+        contents = toml_reader._contents
+
+        expected = type({})
+        actual = type(contents)
+        self.assertEqual(expected, type(contents))
+
+        expected = 2
+        actual = len(contents)
+        self.assertEqual(expected, actual)
+        self.assertEqual(self.toml_data, contents)
+        expected = 4
+        actual = contents['detect_field_num']
+        self.assertEqual(expected, actual)
+
+        expected = self.toml_data['area']
+        actual = contents['area']
+        self.assertEqual(expected, actual)
+
+        toml_reader.set_file_path('path/to/csv')
+        with self.assertRaises(FileNotFoundError) as e:
+            toml_reader.load_file()
+
+        err_message = 'path/to/csvが見つかりませんでした'
+        actual = str(e.exception)
+        self.assertEqual(err_message, actual)
+
     def test_get_contents(self):
         toml_reader = frt()
         toml_reader.set_file_path(self.file_name)
         toml_reader.load_file()
 
-        expect = dict
-        actual = toml_reader.get_contents()
+        contents = toml_reader.get_contents()
 
-        self.assertEqual(expect, type(actual))
+        expected = dict
+        actual = type(contents)
+        self.assertEqual(expected, actual)
+        expected = 2
+        actual = len(contents)
+        self.assertEqual(expected, actual)
+        expected = 4
+        expected = self.toml_data['area'][0]
+        actual = contents['area'][0]
+        self.assertEqual(expected, actual)
+        actual = contents
+        self.assertEqual(self.toml_data, actual)
+        self.assertEqual(self.toml_data['detect_field_num'], 
+                         actual['detect_field_num'])
+        self.assertEqual(self.toml_data['area'], actual['area'])
