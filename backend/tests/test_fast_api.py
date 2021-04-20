@@ -5,7 +5,7 @@ import unittest
 import urllib
 
 import toml
-from fast_api import app, get_frontend_path, read_toml
+from fast_api import DirectoryNotFoundError, app, get_frontend_path, read_toml
 from starlette.testclient import TestClient
 
 SETTING_DIR = 'setting'
@@ -391,7 +391,7 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(expect, actual)
 
         path = 'raise_test'
-        with self.assertRaises(FileNotFoundError) as e:
+        with self.assertRaises(DirectoryNotFoundError) as e:
             get_frontend_path(path)
 
         err_message = f'"{path}" directory not found. ' \
@@ -406,7 +406,7 @@ class TestFastAPI(unittest.TestCase):
         self.assertEqual(expect, actual)
 
         path = 'raise_test'
-        with self.assertRaises(FileNotFoundError) as e:
+        with self.assertRaises(DirectoryNotFoundError) as e:
             get_frontend_path(path)
 
         actual = str(e.exception)

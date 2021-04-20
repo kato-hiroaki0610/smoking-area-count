@@ -36,6 +36,11 @@ log = Log()
 log.set_logger()
 
 
+class DirectoryNotFoundError(FileNotFoundError):
+    """Directoryが存在しなかった場合の例外クラス"""
+    pass
+
+
 def get_frontend_path(path) -> str:
     """Webディレクトリのパスを取得する関数
     Pyinstallerでパッケージングしたexeを実行するとTempフォルダに一時ファイルが展開される
@@ -55,7 +60,7 @@ def get_frontend_path(path) -> str:
     error_message = f'"{path}" directory not found. ' \
                     'Unable to display web screen'
     if not pathlib.Path(result).exists():
-        raise FileNotFoundError(error_message)
+        raise DirectoryNotFoundError(error_message)
     return result
 
 
