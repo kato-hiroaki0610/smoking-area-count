@@ -22,4 +22,14 @@ describe('HeaderComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it(`titleが'喫煙室利用者数カウント'を持っていること`, () => {
+    const app = fixture.componentInstance;
+    expect(app.title).toEqual('喫煙室利用者数カウント');
+  });
+
+  it(`タイトルに'喫煙室利用者数カウント'が表示されていること`, () => {
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('span').textContent).toEqual('喫煙室利用者数カウント');
+  });
 });
