@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Room, RoomStatus } from './card/room-info';
+import { Room } from './card/room-info';
 
 import { RoomService } from './room.service';
 
@@ -120,7 +120,6 @@ describe('RoomService', () => {
       'http://localhost:8000/multiple?room=5f&room=9f',
       'http://localhost:8000'
     ];
-
 
     expected.forEach((value, i) => {
       service.getRooms(api[i], room[i]).subscribe(actual => {
