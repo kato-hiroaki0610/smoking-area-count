@@ -30,7 +30,7 @@ export class CardComponent implements OnInit {
     // 戻り値は二重リスト
     // [[k, v]]
     const temp = Object.entries(currentAPI).filter(([k, v]) => v === true);
-    const api = temp[0][0];
+    const api = temp.length === 0 ? 'false' : temp[0][0];
 
     const isExist = this.apis.includes(api);
     // APIがすべてFalseの場合または存在しないAPIの場合は '' となるようにする
