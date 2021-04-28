@@ -15,8 +15,8 @@ export class RoomService {
   // private host = 'http://localhost:4200/app';
   // buildしてhtmlを配置するだけならば、localhostで問題ない
   private readonly host = 'http://localhost:8000';
-  private readonly specifiedHost = this.host + '/specified?room=';
-  private readonly multipleHost = this.host + '/multiple?room=';
+  private readonly specifiedHost = this.host + '/specified';
+  private readonly multipleHost = this.host + '/multiple';
 
   constructor(private http: HttpClient) { }
 

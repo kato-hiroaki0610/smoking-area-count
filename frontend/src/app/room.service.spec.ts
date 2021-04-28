@@ -36,7 +36,7 @@ describe('RoomService', () => {
       'http://localhost:8000',
     ];
     const api: string[] = ['', 'specified', 'multiple', 'hoge'];
-    const room: string[] = ['5f', '5f', '5f&room=7f', ''];
+    const room: string[] = ['?room=5f', '?room=5f', '?room=5f&room=7f', ''];
 
     expected.forEach((value, i) => {
       const actual = service.createAPI(api[i], room[i]);
@@ -93,7 +93,7 @@ describe('RoomService', () => {
 
   it('getRoomsメソッドからAPIが正しく呼べていること', () => {
     const api: string[] = ['', 'specified', 'multiple', 'hoge'];
-    const room: string[] = ['5f', '5f', '5f&room=9f', ''];
+    const room: string[] = ['?room=5f', '?room=5f', '?room=5f&room=9f', ''];
     const expected: Room[][] = [
       [
         { room_status: [

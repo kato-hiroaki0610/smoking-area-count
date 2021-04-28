@@ -17,7 +17,8 @@ export class CardComponent implements OnInit {
   public roomStatus: RoomStatus[];
 
   private readonly apis: string[] = ['', 'specified', 'multiple'];
-  private readonly specifiedIndex: number = 1;
+  private readonly mainAPIIndex: number = 0;
+  private readonly specifiedAPIIndex: number = 1;
 
   constructor(private roomService: RoomService) { }
 
@@ -30,11 +31,11 @@ export class CardComponent implements OnInit {
     // 戻り値は二重リスト
     // [[k, v]]
     const temp = Object.entries(currentAPI).filter(([k, v]) => v === true);
-    const api = temp.length === 0 ? 'false' : temp[0][0];
+    const api = temp.length === 0 ? null : temp[0][0];
 
-    const isExist = this.apis.includes(api);
+    const isAPIExist = this.apis.includes(api);
     // APIがすべてFalseの場合または存在しないAPIの場合は '' となるようにする
-    if (!api || !isExist) {
+    if (!api || !isAPIExist) {
       return '';
     }
 
@@ -43,19 +44,28 @@ export class CardComponent implements OnInit {
   }
 
   getRoom(api: string, rooms: string[]): string {
-    // apiがspecifiedなのに部屋が複数指定されている場合、最初の一つを返す
-    if (api === this.apis[this.specifiedIndex] && rooms.length > 1) {
-      return rooms[0];
+    let result = '';
+
+    // 「/」apiの場合はroomを結合しない
+    if (api === this.apis[this.mainAPIIndex]) {
+      return result;
     }
 
-    let result = '';
-    const joinString = '&room=';
+    const joinString = 'room=';
+    result += '?';
+    // 「specified」apiなのに部屋が複数指定されている場合、最初の一つを返す
+    if (api === this.apis[this.specifiedAPIIndex] && rooms.length > 1) {
+      result += joinString + rooms[0];
+      return result;
+    }
+
+    const ampersand = '&';
     rooms.forEach(r => {
-      result += r + joinString;
+      result += joinString + r + ampersand;
     });
 
-    // 末尾の'&room='を削除する
-    return result.slice(0, -joinString.length);
+    // 末尾の'&'を削除する
+    return result.slice(0, -ampersand.length);
   }
 
   getRooms(): void {
