@@ -36,7 +36,7 @@ class TestSmokingAreaCount(object):
         """CSVを削除する"""
         pathlib.Path(file_name).unlink()
 
-    def rewrite_csv_path(self, csv_file_name, index, is_use_or_wait):
+    def edit_settingfile(self, csv_file_name, index, is_use_or_wait, place=None, limit=None):
         """setting用のtomlファイルを編集する"""
         setting_dir = 'bin\\setting'
         setting_file = 'setting.toml'
@@ -49,7 +49,13 @@ class TestSmokingAreaCount(object):
         else:
             csv_path = str(pathlib.Path.cwd() / csv_file_name)
             toml_data['area'][index][is_use_or_wait] = csv_path
-        print(toml_data)
+
+        if place is not None:
+            toml_data['area'][index]['場所'] = place
+
+        if limit is not None:
+            toml_data['area'][index]['定員上限'] = place
+
         with open(f'{setting_dir}\\{setting_file}', 'w', newline='',
                   encoding='utf8') as fp:
             toml.dump(toml_data, fp)
@@ -106,7 +112,7 @@ class TestSmokingAreaCount(object):
                 {'path': csv_files[2], 'index': 2, 'use_or_wait': use},
             ]
         for i in rewrite_data:
-            self.rewrite_csv_path(i['path'], i['index'], i['use_or_wait'])
+            self.edit_settingfile(i['path'], i['index'], i['use_or_wait'])
         time.sleep(5)
 
         tags = ['room_use_wrap', 'room_wait_wrap']
@@ -145,7 +151,7 @@ class TestSmokingAreaCount(object):
                 {'path': csv_files[1], 'index': 2, 'use_or_wait': wait}
             ]
         for i in rewrite_data:
-            self.rewrite_csv_path(i['path'], i['index'], i['use_or_wait'])
+            self.edit_settingfile(i['path'], i['index'], i['use_or_wait'])
         time.sleep(5)
 
         tags = ['room_use_wrap', 'room_wait_wrap']
@@ -168,8 +174,8 @@ class TestSmokingAreaCount(object):
             assert expecteds[i][0] == detect_for_use
             assert expecteds[i][1] == detect_for_wait
 
-            self.rewrite_csv_path(csv_files[1], 0, use)
-            self.rewrite_csv_path(csv_files[0], 0, wait)
+            self.edit_settingfile(csv_files[1], 0, use)
+            self.edit_settingfile(csv_files[0], 0, wait)
 
             time.sleep(5)
 
@@ -194,7 +200,7 @@ class TestSmokingAreaCount(object):
                 {'path': csv_files[1], 'index': 0, 'use_or_wait': wait}
             ]
         for i in rewrite_data:
-            self.rewrite_csv_path(i['path'], i['index'], i['use_or_wait'])
+            self.edit_settingfile(i['path'], i['index'], i['use_or_wait'])
         time.sleep(5)
 
         tags = ['room_use_wrap', 'room_wait_wrap']
@@ -255,8 +261,8 @@ class TestSmokingAreaCount(object):
                 {'path': 'empty', 'index': 2, 'use_or_wait': wait},
             ]
         for i in rewrite_data:
-            self.rewrite_csv_path(i['path'], i['index'], i['use_or_wait'])
-        time.sleep(10)
+            self.edit_settingfile(i['path'], i['index'], i['use_or_wait'])
+        time.sleep(5)
 
         tags = ['room_use_wrap', 'room_wait_wrap']
         expecteds = ['2人', '0人', '0人']
@@ -264,7 +270,6 @@ class TestSmokingAreaCount(object):
             elements = self.driver.find_elements_by_class_name(tags[i])
 
             for j in range(len(expecteds)):
-                print(j)
                 element = elements[j]
                 detects = element.find_elements_by_tag_name('div')
                 detect = detects[1].get_attribute('innerHTML')
