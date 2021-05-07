@@ -12,7 +12,7 @@ class TestSmokingAreaCount(object):
         self.driver = webdriver.Chrome()
         # Selenium 経由でブラウザを操作する
         self.driver.get('http://localhost:8000/web/index.html')
-        time.sleep(5)
+        # time.sleep(5)
         print(self.driver.current_url)
 
     def open_csv(self, file_path):
@@ -43,16 +43,15 @@ class TestSmokingAreaCount(object):
                    'backend\\src\\test_file\\video_source.csv'
         rows = self.open_csv(csv_file)
         last_row = rows[-1]
-        detected = last_row[-1]
+        expected = last_row[-1] + '人'
 
-        tag = 'card > div:nth-child(2)'
-        # elements = self.driver.find_elements_by_class('card')
-        elements = self.driver.find_element_by_css_selector(tag)
-
-        expected = detected
+        tag = 'room_use_wrap'
+        elements = self.driver.find_elements_by_class_name(tag)
         element = elements[0]
+        detects = element.find_elements_by_tag_name('div')
+        detect = detects[1].get_attribute('innerHTML')
 
-        assert expected == element.get_attribute('innerHTML')
+        assert expected == detect
 
     def test_csv_change(self):
         # implemented yet
