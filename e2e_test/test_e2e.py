@@ -73,19 +73,28 @@ class TestSmokingAreaCount(object):
 
         use = '利用者'
         wait = '待ち人数'
-        self.rewrite_csv_path(csv_files[0], 0, use)
-        self.rewrite_csv_path(csv_files[0], 0, wait)
-        self.rewrite_csv_path(csv_files[1], 1, use)
-        self.rewrite_csv_path(csv_files[2], 2, use)
+        rewrite_data = [
+                {'path': csv_files[0], 'index': 0, 'use_or_wait': use},
+                {'path': csv_files[0], 'index': 0, 'use_or_wait': wait},
+                {'path': csv_files[1], 'index': 1, 'use_or_wait': use},
+                {'path': csv_files[1], 'index': 1, 'use_or_wait': wait},
+                {'path': csv_files[2], 'index': 2, 'use_or_wait': use},
+            ]
+        for i in rewrite_data:
+            self.rewrite_csv_path(i['path'], i['index'], i['use_or_wait'])
         time.sleep(5)
 
-        tag = 'room_use_wrap'
-        elements = self.driver.find_elements_by_class_name(tag)
-        element = elements[0]
-        detects = element.find_elements_by_tag_name('div')
-        detect = detects[1].get_attribute('innerHTML')
+        tags = ['room_use_wrap', 'room_wait_wrap']
+        for i in range(len(tags)):
+            elements = self.driver.find_elements_by_class_name(tags[i])
 
-        assert '5人' == detect
+            expecteds = [['5人', '20人', '100人'], ['5人', '20人', '0人']]
+            for j in range(len(expecteds[0])):
+                element = elements[j]
+                detects = element.find_elements_by_tag_name('div')
+                detect = detects[1].get_attribute('innerHTML')
+
+                assert expecteds[i][j] == detect
 
         for f in csv_files:
             self.remove_csv(f)
