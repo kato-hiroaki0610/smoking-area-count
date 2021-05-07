@@ -57,6 +57,26 @@ class TestSmokingAreaCount(object):
         actual = title.get_attribute('innerHTML')
         assert expected == actual
 
+    def test_is_displayed_info(self):
+        """設定ファイルに記載されている情報がすべて表示されていること"""
+        setting_dir = 'bin\\setting'
+        setting_file = 'setting.toml'
+
+        toml_data = toml.load(open(f'{setting_dir}\\{setting_file}',
+                              encoding='utf8'))
+        expected_info = toml_data['area'][0]
+
+        elements = self.driver.find_elements_by_class_name('card')
+
+        for i, expected in enumerate(expected_info.keys()):
+            actual = elements[0].get_attribute('innerHTML')
+            if expected == '場所':
+                assert expected_info[expected] in actual
+            elif expected == '待ち人数':
+                assert '待機中' in actual
+            else:
+                assert expected in actual
+
     def test_is_displayed_count_of_last_line_of_csv(self):
         """カードに表示されている検知人数がCSVの最終行と一致すること"""
         csv_data = {
@@ -100,7 +120,7 @@ class TestSmokingAreaCount(object):
             self.remove_csv(f)
 
     def test_csv_change(self):
-        # implemented yet
+        """CSVが更新されたらリアルタイムに反映されること"""
         pass
 
     def teardown_method(self):
