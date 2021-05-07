@@ -119,8 +119,58 @@ class TestSmokingAreaCount(object):
         for f in csv_files:
             self.remove_csv(f)
 
-    def test_csv_change(self):
-        """CSVが更新されたらリアルタイムに反映されること"""
+    def test_change_csv_for_settingfile(self):
+        """設定ファイルに設定されているCSVが変更されたらリアルタイムに反映されること"""
+        csv_data = {
+                    'tmp.csv': [['a', 'b', 'c', 'd', '5'],
+                                ['a', 'b', 'c', 'd', '5']],
+                    'tmp2.csv': [['a', 'b', 'c', 'd', '1']]
+        }
+        csv_files = ['tmp.csv', 'tmp2.csv']
+        for f in csv_files:
+            self.create_csv(csv_data[f], f)
+
+        use = '利用者'
+        wait = '待ち人数'
+        rewrite_data = [
+                {'path': csv_files[0], 'index': 0, 'use_or_wait': use},
+                {'path': csv_files[1], 'index': 0, 'use_or_wait': wait}
+            ]
+        for i in rewrite_data:
+            self.rewrite_csv_path(i['path'], i['index'], i['use_or_wait'])
+        time.sleep(5)
+
+        tags = ['room_use_wrap', 'room_wait_wrap']
+        expecteds = [['5人', '1人'], ['1人', '5人']]
+        for i in range(len(csv_files)):
+            elements_for_use = \
+                self.driver.find_elements_by_class_name(tags[0])
+            elements_for_wait = \
+                self.driver.find_elements_by_class_name(tags[1])
+
+            detects_for_use = \
+                elements_for_use[0].find_elements_by_tag_name('div')
+            detect_for_use = \
+                detects_for_use[1].get_attribute('innerHTML')
+            detects_for_wait = \
+                elements_for_wait[0].find_elements_by_tag_name('div')
+            detect_for_wait = \
+                detects_for_wait[1].get_attribute('innerHTML')
+
+            assert expecteds[i][0] == detect_for_use
+            assert expecteds[i][1] == detect_for_wait
+
+            self.rewrite_csv_path(csv_files[1], 0, use)
+            self.rewrite_csv_path(csv_files[0], 0, wait)
+
+            time.sleep(5)
+
+        for f in csv_files:
+            self.remove_csv(f)
+        pass
+
+    def test_renewal_csv_lastline(self):
+        """CSVの更新されたらリアルタイムに反映されること"""
         pass
 
     def teardown_method(self):
