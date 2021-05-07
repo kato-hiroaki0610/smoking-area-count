@@ -1,4 +1,5 @@
 import csv
+import pathlib
 import time
 
 import pytest  # noqa
@@ -12,7 +13,6 @@ class TestSmokingAreaCount(object):
         self.driver = webdriver.Chrome()
         # Selenium 経由でブラウザを操作する
         self.driver.get('http://localhost:8000/web/index.html')
-        # time.sleep(5)
         print(self.driver.current_url)
 
     def open_csv(self, file_path):
@@ -24,10 +24,30 @@ class TestSmokingAreaCount(object):
 
         return rows
 
-    def open_toml(self, file_path):
-        """tomlを開く"""
-        with open(self._file_path, encoding='utf8') as f:
-            return toml.load(f)
+    def create_csv(self, csv_data, file_name):
+        """CSVを作成する"""
+        pathlib.Path('./\\' + file_name).touch()
+
+        with open(file_name, 'w', newline='', encoding='utf8') as f:
+            writer = csv.writer(f)
+            writer.writerows(csv_data)
+
+    def remove_csv(self, file_name):
+        """CSVを削除する"""
+        pathlib.Path(file_name).unlink()
+
+    def rewrite_csv_path(self, csv_file_name, index, is_use_or_wait):
+        """setting用のtomlファイルを編集する"""
+        setting_dir = 'bin\\setting'
+        setting_file = 'setting.toml'
+
+        toml_data = toml.load(open(f'{setting_dir}\\{setting_file}',
+                              encoding='utf8'))
+        csv_path = str(pathlib.Path.cwd() / csv_file_name)
+        toml_data['area'][index][is_use_or_wait] = csv_path
+        with open(f'{setting_dir}\\{setting_file}', 'w',
+                  encoding='utf8') as fp:
+            toml.dump(toml_data, fp)
 
     def test_title(self):
         """titleが「喫煙室利用者数カウント」であること"""
@@ -39,11 +59,25 @@ class TestSmokingAreaCount(object):
 
     def test_is_displayed_count_of_last_line_of_csv(self):
         """カードに表示されている検知人数がCSVの最終行と一致すること"""
-        csv_file = 'E:\\project\\smoking-area-count\\' \
-                   'backend\\src\\test_file\\video_source.csv'
-        rows = self.open_csv(csv_file)
-        last_row = rows[-1]
-        expected = last_row[-1] + '人'
+        csv_data = {
+                    'tmp.csv': [['a', 'b', 'c', 'd', '5'],
+                                ['a', 'b', 'c', 'd', '6'],
+                                ['a', 'b', 'c', 'd', '5']],
+                    'tmp2.csv': [['a', 'b', 'c', 'd', '20']],
+                    'tmp3.csv': [['a', 'b', 'c', 'd', '100']],
+                    'tmp4.csv': [['a', 'b', 'c', 'd', '1']],
+        }
+        csv_files = ['tmp.csv', 'tmp2.csv', 'tmp3.csv', 'tmp4.csv']
+        for f in csv_files:
+            self.create_csv(csv_data[f], f)
+
+        use = '利用者'
+        wait = '待ち人数'
+        self.rewrite_csv_path(csv_files[0], 0, use)
+        self.rewrite_csv_path(csv_files[0], 0, wait)
+        self.rewrite_csv_path(csv_files[1], 1, use)
+        self.rewrite_csv_path(csv_files[2], 2, use)
+        time.sleep(5)
 
         tag = 'room_use_wrap'
         elements = self.driver.find_elements_by_class_name(tag)
@@ -51,7 +85,10 @@ class TestSmokingAreaCount(object):
         detects = element.find_elements_by_tag_name('div')
         detect = detects[1].get_attribute('innerHTML')
 
-        assert expected == detect
+        assert '5人' == detect
+
+        for f in csv_files:
+            self.remove_csv(f)
 
     def test_csv_change(self):
         # implemented yet
