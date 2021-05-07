@@ -36,7 +36,8 @@ class TestSmokingAreaCount(object):
         """CSVを削除する"""
         pathlib.Path(file_name).unlink()
 
-    def edit_settingfile(self, csv_file_name, index, is_use_or_wait, place=None, limit=None):
+    def edit_settingfile(self, csv_file_name, index, 
+                         is_use_or_wait, place=None, limit=None):
         """setting用のtomlファイルを編集する"""
         setting_dir = 'bin\\setting'
         setting_file = 'setting.toml'
