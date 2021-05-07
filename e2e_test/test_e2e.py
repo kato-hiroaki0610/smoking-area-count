@@ -317,6 +317,48 @@ class TestSmokingAreaCount(object):
         for f in csv_files:
             self.remove_csv(f)
 
+    def test_is_alert_blink(self):
+        csv_data = {
+                    'tmp.csv': [['a', 'b', 'c', 'd', '5'],
+                                ['a', 'b', 'c', 'd', '6'],
+                                ['a', 'b', 'c', 'd', '2']],
+                    'tmp1.csv': [['a', 'b', 'c', 'd', '5']]
+
+        }
+        csv_files = ['tmp.csv', 'tmp1.csv']
+        for f in csv_files:
+            self.create_csv(csv_data[f], f)
+        time.sleep(2)
+
+        use = '利用者'
+        rewrite_data = [
+                {'path': csv_files[0], 'index': 0,
+                 'use_or_wait': use, 'limit': 5},
+                {'path': csv_files[1], 'index': 1,
+                 'use_or_wait': use, 'limit': 3},
+            ]
+        for i in rewrite_data:
+            self.edit_settingfile(i['path'], i['index'],
+                                  i['use_or_wait'], limit=i['limit'])
+
+        tag = 'card'
+        elements = self.driver.find_elements_by_class_name(tag)
+
+        limit_element = elements[1]
+        limit_card = limit_element.get_attribute('innerHTML')
+
+        expecteds = ['limit_color', 'unlimit_color']
+        assert expecteds[0] in limit_card
+        time.sleep(2)
+        elements = self.driver.find_elements_by_class_name(tag)
+
+        limit_element = elements[1]
+        limit_card = limit_element.get_attribute('innerHTML')
+        assert expecteds[0] in limit_card
+
+        for f in csv_files:
+            self.remove_csv(f)
+
     def teardown_method(self):
         # ブラウザを終了する
         self.driver.close()
